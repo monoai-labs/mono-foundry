@@ -2,6 +2,11 @@
 
 All notable changes to monofoundry are documented here.
 
+## v0.3.1 — 2026-06-12
+
+- Windows binaries no longer report a corrupted signature
+- Bug fixes and internal improvements.
+
 ## v0.3.0 — 2026-06-12
 
 - Distributes as self-contained native binaries (macOS, Linux, Windows; x64 and ARM64).
