@@ -1,25 +1,86 @@
 # monofoundry
 
-A thin-client CLI for the [monō ai](https://app.monoai.co) coding agent. The
-agent loop and model intelligence run server-side; this CLI streams responses
-and executes tool commands locally in your workspace.
+A thin-client CLI for the [monō ai](https://app.monoai.co) coding agent. The agent loop and model intelligence run server-side; this CLI streams responses and executes tool commands locally in your workspace.
 
-> **Pre-release.** No binary releases are published here yet. The installer
-> below starts working the moment the first release is tagged. This page is
-> replaced with the full documentation on the first publish.
+Your skills, agent instructions, and local context will all be automatically detected. This tool by default will assume all the permissions of the running user; use `/approve` if you want to approve steps, and sandbox it if you want additional protection.
+
+## Prerequisites
+
+- A monō ai account (Google/Microsoft SSO or an API key).
 
 ## Install
 
 ```bash
+# Installs the latest release
 curl -fsSL https://raw.githubusercontent.com/monoai-labs/mono-foundry/main/install.sh | bash
 ```
 
-**Windows:** download `monofoundry-win32-x64.exe` (or `-arm64`) from the
-[Releases page](https://github.com/monoai-labs/mono-foundry/releases) once
-available, and add it to your `PATH`.
+Or download the script and run it directly:
+
+```bash
+curl -fsSL -o install.sh https://raw.githubusercontent.com/monoai-labs/mono-foundry/main/install.sh
+chmod +x install.sh
+./install.sh            # latest release
+./install.sh v0.2.0     # a specific release tag
+```
+
+To **upgrade**, re-run the same command.
+
+**Windows:** download `monofoundry-win32-x64.exe` or `monofoundry-win32-arm64.exe` directly from the [Releases page](https://github.com/monoai-labs/mono-foundry/releases) and add it to your `PATH`.
+
+Verify:
+
+```bash
+monofoundry --help
+```
+
+## Authentication
+
+```bash
+monofoundry auth login              # Google OAuth (default)
+monofoundry auth login --microsoft  # Microsoft OAuth
+monofoundry auth login --apikey     # paste an API key (sk-... / sk_...). Note that this will disable seeing conversations in your personal conversation list
+monofoundry auth status             # show current sign-in
+monofoundry auth logout             # remove stored credentials
+```
+
+Credentials persist at `~/.monofoundry/config.json`. Note that for browser-based login, you currently need to copy/paste the vscode:// redirect URL from the browser to the command line by right clicking on the "Open monō ai" link -> Copy Link Address.
+
+## Usage
+
+```bash
+monofoundry                 # interactive REPL
+monofoundry "fix the failing test in src/render"   # one-shot
+```
+
+### Options
+
+| Flag                 | Description                                             |
+| -------------------- | ------------------------------------------------------- |
+| `--cwd <path>`       | Set the workspace root (default: current directory)     |
+| `--model <model_id>` | Use a specific model for this session                   |
+| `--approve`          | Require approval before applying code edits (REPL only) |
+| `--help`, `-h`       | Show usage                                              |
+
+`monofoundry auth login` additionally accepts `--endpoint <url>` to override the API endpoint when signing in.
+
+### REPL commands
+
+Inside the interactive REPL, slash commands are available:
+
+| Command          | Description                           |
+| ---------------- | ------------------------------------- |
+| `/new`           | Start a new conversation              |
+| `/resume`        | Resume the most recent conversation   |
+| `/conversations` | List saved conversations              |
+| `/history`       | Show the current conversation history |
+| `/model`         | Show or change the LLM being used     |
+| `/approve`       | Toggle approval mode for code edits   |
+| `/skills`        | List discovered skills                |
+| `/<skill-name>`  | Run a discovered skill as a turn      |
+
+Conversation history is stored locally under `~/.monofoundry/projects/<slug>/conversations/`.
 
 ---
 
-© monō ai Australia Pty Ltd. All rights reserved. Use is subject to monō ai's
-[legal policies](https://www.monoai.co/legal) and
-[terms of service](https://app.monoai.co/terms).
+© monō ai Australia Pty Ltd. All rights reserved. Use is subject to monō ai's [legal policies](https://www.monoai.co/legal) and [terms of service](https://app.monoai.co/terms).
