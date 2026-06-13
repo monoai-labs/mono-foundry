@@ -2,6 +2,23 @@
 
 All notable changes to monofoundry are documented here.
 
+## v0.4.0 — 2026-06-13
+
+- Shell mode: prefix any input with `!` to run a local shell command without leaving the agent loop.
+- Ctrl-R fuzzy history search picker with scored ranking.
+- `@`-prefix file path completion in the input line.
+- Prompt stash (Ctrl-S / `/stash`) to push and pop the current input buffer.
+- Token usage tracking: per-turn summary, `/tokens` command with session/conversation/project/lifetime totals, and cost estimates where pricing data is available.
+- Managed terminal tools: the agent can now spawn, read, write to, and kill named background processes.
+- `run_task` now discovers tasks from npm/pnpm/bun/yarn scripts, `.vscode/tasks.json`, and Makefile targets.
+- `get_diagnostics` now runs real checkers (tsc/tsgo, oxlint, eslint, pyright, mypy) and returns a unified diagnostic list.
+- `code_runner` executes JavaScript, TypeScript, and Python snippets in isolated temporary directories. Requires Node 22+.
+- Model list cached to disk with a 24-hour TTL, reducing unnecessary network calls on startup.
+- `document_content`, `json_content`, `file_references`, `application_code`, and `overlay` content blocks now handled.
+- Clarification confirmation line shows the delivered message text.
+- Fixed Shift-Enter / Alt-Enter newline insertion, multi-line history navigation asymmetry, Ctrl-R picker layout corruption, tab-completion input drift, `@`-completion going dead, Ctrl-W WORDCHARS handling, `fd` glob search returning zero results, and inline underscore rendering.
+- Bug fixes and internal improvements.
+
 ## v0.3.1 — 2026-06-12
 
 - Windows binaries no longer report a corrupted signature

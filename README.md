@@ -68,18 +68,28 @@ monofoundry "fix the failing test in src/render"   # one-shot
 
 Inside the interactive REPL, slash commands are available:
 
-| Command          | Description                           |
-| ---------------- | ------------------------------------- |
-| `/new`           | Start a new conversation              |
-| `/resume`        | Resume the most recent conversation   |
-| `/conversations` | List saved conversations              |
-| `/history`       | Show the current conversation history |
-| `/model`         | Show or change the LLM being used     |
-| `/approve`       | Toggle approval mode for code edits   |
-| `/skills`        | List discovered skills                |
-| `/<skill-name>`  | Run a discovered skill as a turn      |
+| Command          | Description                                   |
+| ---------------- | --------------------------------------------- |
+| `/new`           | Start a new conversation                      |
+| `/resume`        | Resume the most recent conversation           |
+| `/conversations` | List all saved conversations for resumption   |
+| `/history`       | Show the current conversation history         |
+| `/model`         | Show or change the LLM being used             |
+| `/clarify <msg>` | Steer the agent mid-turn                      |
+| `.tokens`        | Display token usage stats                     |
+| `/project`       | Select the workspace project for this session |
+| `/workitem`      | Select a workitem for this session            |
+| `/approve`       | Toggle approval mode for code edits           |
+| `/skills`        | List discovered skills                        |
+| `/<skill-name>`  | Run a discovered skill as a turn              |
+| `/help`          | Show help                                     |
+| `/quit`          | Exit                                          |
 
 Conversation history is stored locally under `~/.monofoundry/projects/<slug>/conversations/`.
+
+## Docs
+
+- [Commands & Shortcuts](docs/commands.md) — full reference for slash commands, keyboard shortcuts, and shell mode
 
 ---
 
