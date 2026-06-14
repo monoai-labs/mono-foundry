@@ -2,6 +2,11 @@
 
 All notable changes to monofoundry are documented here.
 
+## v0.5.0 — 2026-06-14
+
+- Binary releases are now significantly smaller for macOS and Linux.
+- Bug fixes and internal improvements.
+
 ## v0.4.1 — 2026-06-14
 
 - Background update checking on startup, with a notice when a newer version is available, plus a `/update` command to check manually and upgrade in place.

@@ -1,6 +1,6 @@
-# monofoundry
+# monō-foundry
 
-A thin-client CLI for the [monō ai](https://app.monoai.co) coding agent. The agent loop and model intelligence run server-side; this CLI streams responses and executes tool commands locally in your workspace.
+A thin-client CLI for the [monō ai](https://app.monoai.co) coding agent. The agent loop, model intelligence, and projects/workspaces all run server-side; this CLI streams responses and executes tool commands in your local context.
 
 Skills, agent instructions, and local context will all be automatically detected. This tool by default will assume all the permissions of the running user; use `/approve` if you want to approve steps, and sandbox it if you want additional protection.
 
@@ -21,10 +21,10 @@ Or download the script and run it directly:
 curl -fsSL -o install.sh https://raw.githubusercontent.com/monoai-labs/mono-foundry/main/install.sh
 chmod +x install.sh
 ./install.sh            # latest release
-./install.sh v0.2.0     # a specific release tag
+./install.sh v0.5.0     # a specific release tag
 ```
 
-To **upgrade**, re-run the same command.
+To **update**, re-run the same command, or run `/update` in the CLI.
 
 **Windows:** download `monofoundry-win32-x64.exe` or `monofoundry-win32-arm64.exe` directly from the [Releases page](https://github.com/monoai-labs/mono-foundry/releases) and add it to your `PATH`.
 
@@ -44,7 +44,7 @@ monofoundry auth status             # show current sign-in
 monofoundry auth logout             # remove stored credentials
 ```
 
-Credentials persist at `~/.monofoundry/config.json`. Note that for browser-based login, you currently need to copy/paste the vscode:// redirect URL from the browser to the command line by right clicking on the "Open monō ai" link -> Copy Link Address.
+Credentials and settings are persisted at `~/.monofoundry/config.json`. Note that for browser-based login, you currently need to copy/paste the vscode:// redirect URL from the browser to the command line by right clicking on the "Open monō ai" link -> Copy Link Address.
 
 ## Usage
 
@@ -82,6 +82,7 @@ Inside the interactive REPL, slash commands are available:
 | `/approve`       | Toggle approval mode for code edits           |
 | `/skills`        | List discovered skills                        |
 | `/<skill-name>`  | Run a discovered skill as a turn              |
+| `/update`        | Check for and install updates                 |
 | `/help`          | Show help                                     |
 | `/quit`          | Exit                                          |
 
