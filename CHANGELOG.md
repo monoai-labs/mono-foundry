@@ -2,6 +2,14 @@
 
 All notable changes to monofoundry are documented here.
 
+## v0.4.1 — 2026-06-14
+
+- Background update checking on startup, with a notice when a newer version is available, plus a `/update` command to check manually and upgrade in place.
+- `/costs` added as an alias for `/tokens`.
+- `/tokens` report reformatted: aligned costs, cost column before turns, right-aligned values, and per-row totals.
+- `/help` output aligned into a single column, with an outdated model reference removed.
+- Bug fixes and internal improvements.
+
 ## v0.4.0 — 2026-06-13
 
 - Shell mode: prefix any input with `!` to run a local shell command without leaving the agent loop.

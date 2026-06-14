@@ -2,7 +2,7 @@
 
 A thin-client CLI for the [monō ai](https://app.monoai.co) coding agent. The agent loop and model intelligence run server-side; this CLI streams responses and executes tool commands locally in your workspace.
 
-Your skills, agent instructions, and local context will all be automatically detected. This tool by default will assume all the permissions of the running user; use `/approve` if you want to approve steps, and sandbox it if you want additional protection.
+Skills, agent instructions, and local context will all be automatically detected. This tool by default will assume all the permissions of the running user; use `/approve` if you want to approve steps, and sandbox it if you want additional protection.
 
 ## Prerequisites
 
@@ -76,7 +76,7 @@ Inside the interactive REPL, slash commands are available:
 | `/history`       | Show the current conversation history         |
 | `/model`         | Show or change the LLM being used             |
 | `/clarify <msg>` | Steer the agent mid-turn                      |
-| `.tokens`        | Display token usage stats                     |
+| `/tokens`        | Display token usage stats                     |
 | `/project`       | Select the workspace project for this session |
 | `/workitem`      | Select a workitem for this session            |
 | `/approve`       | Toggle approval mode for code edits           |

@@ -23,12 +23,13 @@ Slash commands are available inside the interactive REPL. Type `/` to trigger ta
 
 ### Core
 
-| Command | Aliases | Description |
-|---|---|---|
-| `/help` | — | List all available commands and shortcuts |
-| `/quit` | `/exit` | Exit the REPL (saves input history first) |
-| `/new` | `/clear` | Start a new conversation (clears current conversation ID) |
-| `/stash [text]` | — | Stash input or open the stash picker |
+| Command         | Aliases  | Description                                               |
+| --------------- | -------- | --------------------------------------------------------- |
+| `/help`         | —        | List all available commands and shortcuts                 |
+| `/quit`         | `/exit`  | Exit the REPL (saves input history first)                 |
+| `/new`          | `/clear` | Start a new conversation (clears current conversation ID) |
+| `/stash [text]` | —        | Stash input or open the stash picker                      |
+| `/update`       | —        | Update the tool to the latest version                     |
 
 #### `/help`
 
@@ -78,16 +79,26 @@ A LIFO stash for text you want to set aside temporarily.
 # opens picker — select an entry to restore it to the input buffer
 ```
 
+#### `/update`
+
+Checks for any available updates.
+
+```
+> /update
+Checking for updates
+Update available: v0.5.0 (current: v0.4.0)
+```
+
 ---
 
 ### Conversation
 
-| Command | Description |
-|---|---|
-| `/resume [id]` | Resume the most recent conversation, or a specific one by ID |
-| `/conversations` | Browse and resume local and project-linked conversations |
-| `/history` | Show recent remote conversation history (up to 10) |
-| `/tokens` | Display token usage for session, conversation, project, and overall — with a per-model breakdown under each tier |
+| Command          | Aliases  | Description                                                                                                                          |
+| ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `/resume [id]`   | -        | Resume the most recent conversation, or a specific one by ID                                                                         |
+| `/conversations` | -        | Browse and resume local and project-linked conversations                                                                             |
+| `/history`       | -        | Show recent remote conversation history (up to 10)                                                                                   |
+| `/tokens`        | `/costs` | Display token usage and estimated costs for session, conversation, project, and overall — with a per-model breakdown under each tier |
 
 #### `/resume [id]`
 
@@ -150,12 +161,12 @@ Model rows are only shown when usage spans more than one model in a tier. They a
 
 ### Session
 
-| Command | Description |
-|---|---|
-| `/model [id\|reset]` | View available models, set the active model, or reset to default |
-| `/approve` | Toggle approval mode for file edits |
-| `/clarify <msg>` | Steer the agent mid-turn |
-| `/nosave [msg\|/cmd]` | Run a turn or command without saving to the backend |
+| Command               | Description                                                      |
+| --------------------- | ---------------------------------------------------------------- |
+| `/model [id\|reset]`  | View available models, set the active model, or reset to default |
+| `/approve`            | Toggle approval mode for file edits                              |
+| `/clarify <msg>`      | Steer the agent mid-turn                                         |
+| `/nosave [msg\|/cmd]` | Run a turn or command without saving to the backend              |
 
 #### `/model [id|reset]`
 
@@ -226,9 +237,9 @@ Enables nosave mode for the session, then optionally runs a message or another s
 
 ### Project
 
-| Command | Description |
-|---|---|
-| `/project [id\|key\|name\|clear]` | Select (or clear) the workspace project for this session |
+| Command                             | Description                                              |
+| ----------------------------------- | -------------------------------------------------------- |
+| `/project [id\|key\|name\|clear]`   | Select (or clear) the workspace project for this session |
 | `/workitem [id\|key\|title\|clear]` | Select (or clear) a work item within the current project |
 
 #### `/project [id|key|name|clear]`
@@ -278,9 +289,9 @@ Work item cleared.
 
 ### Skills
 
-| Command | Description |
-|---|---|
-| `/skills` | List all discovered skills |
+| Command               | Description                                               |
+| --------------------- | --------------------------------------------------------- |
+| `/skills`             | List all discovered skills                                |
 | `/<skill-name> [arg]` | Run a skill as a turn, with an optional argument appended |
 
 Skills are discovered from SKILL.md files in the workspace and your home directory. See the [Skills documentation](https://github.com/monoai-labs/mono-foundry) for the discovery paths and file format.
@@ -325,18 +336,18 @@ nothing to commit, working tree clean
 
 ### Ctrl- Shortcuts
 
-| Shortcut | Action |
-|---|---|
-| `Ctrl-C` | Interrupt — cancel the running turn, or clear the current buffer |
-| `Ctrl-D` | Exit the REPL (equivalent to `/quit`) |
-| `Ctrl-A` | Move cursor to the start of the line |
-| `Ctrl-E` | Move cursor to the end of the line |
-| `Ctrl-U` | Delete everything from the start of the line to the cursor |
-| `Ctrl-W` | Delete the word immediately before the cursor |
-| `Ctrl-R` | Open the history search picker |
+| Shortcut | Action                                                                                                   |
+| -------- | -------------------------------------------------------------------------------------------------------- |
+| `Ctrl-C` | Interrupt — cancel the running turn, or clear the current buffer                                         |
+| `Ctrl-D` | Exit the REPL (equivalent to `/quit`)                                                                    |
+| `Ctrl-A` | Move cursor to the start of the line                                                                     |
+| `Ctrl-E` | Move cursor to the end of the line                                                                       |
+| `Ctrl-U` | Delete everything from the start of the line to the cursor                                               |
+| `Ctrl-W` | Delete the word immediately before the cursor                                                            |
+| `Ctrl-R` | Open the history search picker                                                                           |
 | `Ctrl-S` | Stash / restore: stash the buffer on first press; restore (pop) on the second press with an empty buffer |
-| `Ctrl-←` | Move cursor one word to the left |
-| `Ctrl-→` | Move cursor one word to the right |
+| `Ctrl-←` | Move cursor one word to the left                                                                         |
+| `Ctrl-→` | Move cursor one word to the right                                                                        |
 
 #### `Ctrl-C`
 
@@ -368,25 +379,25 @@ First press with an empty buffer (or second press): pops the most recently stash
 
 ### Navigation
 
-| Key | Action |
-|---|---|
-| `←` / `→` | Move cursor one character left / right |
-| `Home` | Move cursor to the start of the line (same as `Ctrl-A`) |
-| `End` | Move cursor to the end of the line (same as `Ctrl-E`) |
-| `Alt-←` / `Alt-B` | Move cursor one word to the left |
-| `Alt-→` / `Alt-F` | Move cursor one word to the right |
-| `Backspace` | Delete character before the cursor |
-| `Delete` | Delete character at the cursor |
+| Key               | Action                                                  |
+| ----------------- | ------------------------------------------------------- |
+| `←` / `→`         | Move cursor one character left / right                  |
+| `Home`            | Move cursor to the start of the line (same as `Ctrl-A`) |
+| `End`             | Move cursor to the end of the line (same as `Ctrl-E`)   |
+| `Alt-←` / `Alt-B` | Move cursor one word to the left                        |
+| `Alt-→` / `Alt-F` | Move cursor one word to the right                       |
+| `Backspace`       | Delete character before the cursor                      |
+| `Delete`          | Delete character at the cursor                          |
 
 ---
 
 ### History
 
-| Key | Action |
-|---|---|
-| `↑` | Previous history entry (or recall the last queued message if one exists) |
-| `↓` | Next history entry |
-| `Ctrl-R` | Open the live-filter history search picker |
+| Key      | Action                                                                   |
+| -------- | ------------------------------------------------------------------------ |
+| `↑`      | Previous history entry (or recall the last queued message if one exists) |
+| `↓`      | Next history entry                                                       |
+| `Ctrl-R` | Open the live-filter history search picker                               |
 
 History is persisted across sessions at `~/.monofoundry/history`.
 
@@ -396,11 +407,11 @@ When multiple messages are queued (e.g. typed while the agent was running), pres
 
 ### Multi-line Input
 
-| Key | Action |
-|---|---|
-| `Shift-Enter` | Insert a literal newline at the cursor position |
-| `Enter` | Submit the message (even if it contains newlines) |
-| `↑` / `↓` | Move cursor up / down a visual line when the buffer has newlines |
+| Key           | Action                                                           |
+| ------------- | ---------------------------------------------------------------- |
+| `Shift-Enter` | Insert a literal newline at the cursor position                  |
+| `Enter`       | Submit the message (even if it contains newlines)                |
+| `↑` / `↓`     | Move cursor up / down a visual line when the buffer has newlines |
 
 Pasted content (bracketed paste) is automatically preserved with its original newlines intact.
 
@@ -414,10 +425,10 @@ Pasted content (bracketed paste) is automatically preserved with its original ne
 
 ### Tab Completion
 
-| Key | Action |
-|---|---|
-| `Tab` | Accept ghost-text completion, or cycle to the next `@`-file match |
-| `Shift-Tab` | Cycle to the previous `@`-file match |
+| Key         | Action                                                            |
+| ----------- | ----------------------------------------------------------------- |
+| `Tab`       | Accept ghost-text completion, or cycle to the next `@`-file match |
+| `Shift-Tab` | Cycle to the previous `@`-file match                              |
 
 **Slash command completion:** When the buffer starts with `/`, pressing `Tab` completes to the longest common prefix of all matching commands. If multiple commands match, the ghost text shows the common prefix and available options are listed inline.
 
