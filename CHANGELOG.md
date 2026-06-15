@@ -2,6 +2,11 @@
 
 All notable changes to monofoundry are documented here.
 
+## v0.6.1 — 2026-06-15
+
+- Fixed /model command 403 errors and doubled error messages.
+- Model picker now shows model IDs alongside display names.
+
 ## v0.6.0 — 2026-06-15
 
 - Authentication commands in the REPL: /login, /logout, /status for seamless account management without leaving the prompt.
