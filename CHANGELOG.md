@@ -2,6 +2,15 @@
 
 All notable changes to monofoundry are documented here.
 
+## v0.7.0 — 2026-06-15
+
+- Improved credential security.
+- Terminal command exit codes now surfaced in tool data, enabling correct distinction between command failures and tool harness failures.
+- ANSI escape sequences and shell integration sequences now stripped from captured terminal output.
+- Git operations and tool execution now have configurable timeouts to prevent indefinite hangs.
+- Model picker now sorts by frecency for faster repeated selection.
+- Bug fixes and internal improvements.
+
 ## v0.6.1 — 2026-06-15
 
 - Fixed /model command 403 errors and doubled error messages.
@@ -66,3 +75,4 @@ All notable changes to monofoundry are documented here.
 - File and text search fallbacks fixed on Windows.
 - Improved terminal colour palette for inline code and tool call lines.
 - Bug fixes and internal improvements.
+
