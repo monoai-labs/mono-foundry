@@ -2,6 +2,14 @@
 
 All notable changes to monofoundry are documented here.
 
+## v0.6.0 — 2026-06-15
+
+- Authentication commands in the REPL: /login, /logout, /status for seamless account management without leaving the prompt.
+- Organisation switching with /org command for users with multiple organisations.
+- Friendly error messages on session expiry and auth failures.
+- Better guidance when mistyping slash commands or running unknown auth subcommands.
+- Config file corruption prevention via atomic writes.
+
 ## v0.5.0 — 2026-06-14
 
 - Binary releases are now significantly smaller for macOS and Linux.
