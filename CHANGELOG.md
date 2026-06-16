@@ -2,6 +2,12 @@
 
 All notable changes to monofoundry are documented here.
 
+## v0.8.0 — 2026-06-16
+
+- File upload and attachment support: drag files, paste images, or use `/attach` to include local files in conversations.
+- Input history now scoped to each project directory to prevent histories from mixing across codebases.
+- Bug fixes and internal improvements.
+
 ## v0.7.0 — 2026-06-15
 
 - Improved credential security.
@@ -75,4 +81,3 @@ All notable changes to monofoundry are documented here.
 - File and text search fallbacks fixed on Windows.
 - Improved terminal colour palette for inline code and tool call lines.
 - Bug fixes and internal improvements.
-
