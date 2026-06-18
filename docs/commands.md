@@ -1,4 +1,4 @@
-# monofoundry — Commands & Shortcuts
+# monofoundry - Commands & Shortcuts
 
 This document covers every command and keyboard shortcut available in the interactive REPL.
 
@@ -23,6 +23,7 @@ This document covers every command and keyboard shortcut available in the intera
   - [History](#history)
   - [Multi-line Input](#multi-line-input)
   - [Tab Completion](#tab-completion)
+  - [Model Switching](#model-switching)
 
 ---
 
@@ -58,11 +59,11 @@ Slash commands are available inside the interactive REPL. Type `/` to trigger ta
 
 | Command         | Aliases  | Description                                               |
 | --------------- | -------- | --------------------------------------------------------- |
-| `/help`         | —        | List all available commands and shortcuts                 |
+| `/help`         | -        | List all available commands and shortcuts                 |
 | `/quit`         | `/exit`  | Exit the REPL (saves input history first)                 |
 | `/new`          | `/clear` | Start a new conversation (clears current conversation ID) |
-| `/stash [text]` | —        | Stash input or open the stash picker                      |
-| `/update`       | —        | Check for and apply updates to the latest version         |
+| `/stash [text]` | -        | Stash input or open the stash picker                      |
+| `/update`       | -        | Check for and apply updates to the latest version         |
 
 #### `/help`
 
@@ -110,7 +111,7 @@ A LIFO stash for text you want to set aside temporarily.
 [stashed]
 
 > /stash
-# opens picker — select an entry to restore it to the input buffer
+# opens picker - select an entry to restore it to the input buffer
 ```
 
 #### `/update`
@@ -129,10 +130,10 @@ Update available: v0.5.0 (current: v0.4.0)
 
 | Command          | Aliases  | Description                                                                                                                          |
 | ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `/resume [id]`   | —        | Resume the most recent conversation, or a specific one by ID                                                                         |
-| `/conversations` | —        | Browse and resume local and project-linked conversations                                                                             |
-| `/history`       | —        | Show recent remote conversation history (up to 10)                                                                                   |
-| `/tokens`        | `/costs` | Display token usage and estimated costs for session, conversation, project, and overall — with a per-model breakdown under each tier |
+| `/resume [id]`   | -        | Resume the most recent conversation, or a specific one by ID                                                                         |
+| `/conversations` | -        | Browse and resume local and project-linked conversations                                                                             |
+| `/history`       | -        | Show recent remote conversation history (up to 10)                                                                                   |
+| `/tokens`        | `/costs` | Display token usage and estimated costs for session, conversation, project, and overall - with a per-model breakdown under each tier |
 
 #### `/resume [id]`
 
@@ -195,12 +196,12 @@ Model rows are only shown when usage spans more than one model in a tier. They a
 
 ### Session
 
-| Command               | Description                                                      |
-| --------------------- | ---------------------------------------------------------------- |
-| `/model [id\|reset]`  | View available models, set the active model, or reset to default |
-| `/approve`            | Toggle approval mode for file edits                              |
-| `/clarify <msg>`      | Steer the agent mid-turn                                         |
-| `/nosave [msg\|/cmd]` | Run a turn or command without saving to the backend              |
+| Command               | Aliases   | Description                                                      |
+| --------------------- | --------- | ---------------------------------------------------------------- |
+| `/model [id\|reset]`  | `/models` | View available models, set the active model, or reset to default |
+| `/approve`            | -         | Toggle approval mode for file edits                              |
+| `/clarify <msg>`      | -         | Steer the agent mid-turn                                         |
+| `/nosave [msg\|/cmd]` | -         | Run a turn or command without saving to the backend              |
 
 #### `/model [id|reset]`
 
@@ -225,6 +226,8 @@ Model set to: Claude Opus 4.8
 > /model reset
 Model reset to default.
 ```
+
+> **Keyboard shortcut:** Press `Alt/Opt-M` at any time to open the model picker without clearing your input — see [Model Switching](#model-switching).
 
 #### `/approve`
 
@@ -276,7 +279,7 @@ Enables nosave mode for the session, then optionally runs a message or another s
 | `/attach <path>` | Upload a file and stage it for your next message                       |
 | `/paste`         | Capture an image from the clipboard and attach it to your next message |
 
-You can also attach files inline in any message using `@`-prefixed paths — see [@ file completion](#-file-completion) and [Inline @-path attachments](#inline--path-attachments) below.
+You can also attach files inline in any message using `@`-prefixed paths - see [@ file completion](#-file-completion) and [Inline @-path attachments](#inline--path-attachments) below.
 
 #### `/attach <path>`
 
@@ -320,8 +323,8 @@ You can reference files directly in any message by prefixing the path with `@`. 
 
 ```
 > Can you review @src/auth.ts and the design in @docs/auth-flow.png?
-# auth.ts is text — the agent reads it with its tools
-# auth-flow.png is binary — uploaded and sent as an attachment
+# auth.ts is text - the agent reads it with its tools
+# auth-flow.png is binary - uploaded and sent as an attachment
 
 > Summarise the contents of @~/Downloads/report.pdf
 ```
@@ -399,20 +402,20 @@ Switching organisations cascades: the model cache is cleared and refreshed, any 
   Cancel
 
 > /org Acme Corp
-Organisation: Acme Corp  — model cache cleared, new conversation
+Organisation: Acme Corp  - model cache cleared, new conversation
 
 > /org default
-Organisation: default  — model cache cleared, new conversation
+Organisation: default  - model cache cleared, new conversation
 ```
 
 ---
 
 ### Project
 
-| Command                             | Description                                              |
-| ----------------------------------- | -------------------------------------------------------- |
-| `/project [id\|key\|name\|clear]`   | Select (or clear) the workspace project for this session |
-| `/workitem [id\|key\|title\|clear]` | Select (or clear) a work item within the current project |
+| Command                                             | Description                                                     |
+| --------------------------------------------------- | --------------------------------------------------------------- |
+| `/project [id\|key\|name\|clear]                `   | Select (or clear) the workspace project for this session        |
+| `/workitem [create <title>\|id\|key\|title\|clear]` | Select, create, or clear a work item within the current project |
 
 #### `/project [id|key|name|clear]`
 
@@ -424,7 +427,7 @@ The selection persists in `~/.monofoundry/projects/<slug>/meta.json`.
 
 ```
 > /project
-Current project: monō foundry — https://app.monoai.co/projects/...
+Current project: monō foundry - https://app.monoai.co/projects/...
 # opens picker:
   monō foundry    MONO  47 open
   monō platform   PLAT  12 open
@@ -438,9 +441,16 @@ Current project: monō foundry — https://app.monoai.co/projects/...
 Project selection cleared.
 ```
 
-#### `/workitem [id|key|title|clear]`
+#### `/workitem [create <title>|id|key|title|clear]`
 
-Requires a project to be selected first. Opens a filterable picker of all open work items, or accepts a direct argument.
+Requires a project to be selected first.
+
+**Sub-commands:**
+
+- `create <title>` — Create a new work item in the current project. The title can be supplied inline (optionally quoted with `"` or `'`) or entered at a prompt if omitted. You're then prompted for an optional description (press Enter to skip). The new work item is auto-selected on success so you can start working immediately.
+- `<id|key|title>` — Select an existing work item directly.
+- `clear` / `none` / `reset` — Remove the current work item selection.
+- No argument — Open a filterable picker of all open work items.
 
 ```
 > /workitem
@@ -452,6 +462,15 @@ Requires a project to be selected first. Opens a filterable picker of all open w
 
 > /workitem MONO-92
 # selects by key
+
+> /workitem create "Add dark mode toggle"
+Enter an optional description (or press Enter to skip):
+> Just the settings page for now
+
+MONO-207 created (Add dark mode toggle)
+
+> /workitem create Fix the login bug
+# unquoted titles also work; description prompt follows
 
 > /workitem clear
 Work item cleared.
@@ -510,8 +529,8 @@ nothing to commit, working tree clean
 
 | Shortcut | Action                                                                                                   |
 | -------- | -------------------------------------------------------------------------------------------------------- |
-| `Ctrl-C` | Interrupt — cancel the running turn, or clear the current buffer                                         |
-| `Ctrl-D` | Exit the REPL — double-press to confirm (equivalent to `/quit`)                                          |
+| `Ctrl-C` | Interrupt - cancel the running turn, or clear the current buffer                                         |
+| `Ctrl-D` | Exit the REPL - double-press to confirm (equivalent to `/quit`)                                          |
 | `Ctrl-A` | Move cursor to the start of the line                                                                     |
 | `Ctrl-E` | Move cursor to the end of the line                                                                       |
 | `Ctrl-U` | Delete everything from the start of the line to the cursor                                               |
@@ -527,7 +546,7 @@ nothing to commit, working tree clean
 - **While typing (non-empty buffer):** clears the buffer.
 - **While idle (empty buffer):** arms a double-press window. Press `Ctrl-C` a second time within ~2 seconds to exit.
 
-#### `Ctrl-R` — History search
+#### `Ctrl-R` - History search
 
 Opens a live-filter picker over your entire input history. Start typing to narrow the list; `Enter` selects and copies the entry to the input buffer; `Escape` cancels.
 
@@ -538,7 +557,7 @@ Opens a live-filter picker over your entire input history. Start typing to narro
   fix the test snapshot
 ```
 
-#### `Ctrl-S` — Stash
+#### `Ctrl-S` - Stash
 
 First press with a non-empty buffer: stashes the buffer content and clears the input (same as `/stash <buffer>`).
 First press with an empty buffer (or second press): pops the most recently stashed entry back into the buffer.
@@ -547,6 +566,32 @@ First press with an empty buffer (or second press): pops the most recently stash
 # typing: "explain the auth flow"
 # Ctrl-S → buffer cleared, "explain the auth flow" stashed
 # Ctrl-S (empty buffer) → "explain the auth flow" restored
+```
+
+---
+
+### Model Switching
+
+| Shortcut   | Action                                                         |
+| ---------- | ------------------------------------------------------------- |
+| `Alt/Opt-M` | Open the model picker without clearing the input buffer       |
+
+#### `Alt/Opt-M` - Switch model
+
+Opens the model picker directly from the input line — no need to type `/model` and submit. The input buffer is preserved: the picker renders in the live region (temporarily hiding the input), and the buffer is restored when the picker closes, whether you select a model or cancel with `Escape`/`Ctrl-C`.
+
+The selected model persists per project directory and takes effect on the next turn. If the agent is currently generating, the model change applies to subsequent turns — the current turn is not interrupted. The shortcut is ignored if another picker is already open.
+
+```
+# typing: "refactor the auth module to use█"
+# Alt/Opt-M → picker opens, buffer hidden:
+  Select model
+  > Type to filter
+  ▸ Claude Sonnet 4   [standard]  Anthropic
+    GPT-4o             [standard]  OpenAI
+    Cancel
+# select a model → picker closes, buffer restored:
+  ❯ refactor the auth module to use█
 ```
 
 ---
@@ -628,7 +673,7 @@ Pasted content (bracketed paste) is automatically preserved with its original ne
 
 #### Inline @-path attachments
 
-When you submit a message containing `@`-prefixed paths, binary files (images, PDFs, Office documents, etc.) are automatically uploaded and sent as attachments. Text files are left as-is — the agent reads them using its file tools. The message text itself is not modified.
+When you submit a message containing `@`-prefixed paths, binary files (images, PDFs, Office documents, etc.) are automatically uploaded and sent as attachments. Text files are left as-is - the agent reads them using its file tools. The message text itself is not modified.
 
 ```
 > Explain the architecture in @docs/overview.png and @README.md

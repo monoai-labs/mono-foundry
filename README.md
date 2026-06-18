@@ -90,7 +90,7 @@ Conversation history is stored locally under `~/.monofoundry/projects/<slug>/con
 
 ## Docs
 
-- [Commands & Shortcuts](docs/commands.md) — full reference for slash commands, keyboard shortcuts, and shell mode
+- [Commands & Shortcuts](docs/commands.md) - full reference for slash commands, keyboard shortcuts, and shell mode
 
 ---
 

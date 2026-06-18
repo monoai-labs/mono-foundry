@@ -1,6 +1,15 @@
 # Changelog
 
-## v0.9.0 — 2026-06-18
+## v0.10.0 — 2026-06-18
+
+- Create work items directly from the REPL with `/workitem create`.
+- Alt+M shortcut to switch models mid-input without losing your buffer.
+- Fixed input area corruption when running `/login` or being prompted during authentication.
+- Fixed Escape key to interrupt generation.
+- File paths containing spaces are now correctly handled in `@`-token attachments.
+- Bug fixes and internal improvements.
+
+## v0.9.0 - 2026-06-18
 
 - Local MCP server discovery and tool invocation from the CLI.
 - Interactive authentication onboarding flow for first-time users.
@@ -9,13 +18,13 @@
 - Git status tool now handles multi-repo workspaces and distinguishes intent-to-add entries.
 - Bug fixes and internal improvements.
 
-## v0.8.0 — 2026-06-16
+## v0.8.0 - 2026-06-16
 
 - File upload and attachment support: drag files, paste images, or use `/attach` to include local files in conversations.
 - Input history now scoped to each project directory to prevent histories from mixing across codebases.
 - Bug fixes and internal improvements.
 
-## v0.7.0 — 2026-06-15
+## v0.7.0 - 2026-06-15
 
 - Improved credential security.
 - Terminal command exit codes now surfaced in tool data, enabling correct distinction between command failures and tool harness failures.
@@ -24,12 +33,12 @@
 - Model picker now sorts by frecency for faster repeated selection.
 - Bug fixes and internal improvements.
 
-## v0.6.1 — 2026-06-15
+## v0.6.1 - 2026-06-15
 
 - Fixed /model command 403 errors and doubled error messages.
 - Model picker now shows model IDs alongside display names.
 
-## v0.6.0 — 2026-06-15
+## v0.6.0 - 2026-06-15
 
 - Authentication commands in the REPL: /login, /logout, /status for seamless account management without leaving the prompt.
 - Organisation switching with /org command for users with multiple organisations.
@@ -37,12 +46,12 @@
 - Better guidance when mistyping slash commands or running unknown auth subcommands.
 - Config file corruption prevention via atomic writes.
 
-## v0.5.0 — 2026-06-14
+## v0.5.0 - 2026-06-14
 
 - Binary releases are now significantly smaller for macOS and Linux.
 - Bug fixes and internal improvements.
 
-## v0.4.1 — 2026-06-14
+## v0.4.1 - 2026-06-14
 
 - Background update checking on startup, with a notice when a newer version is available, plus a `/update` command to check manually and upgrade in place.
 - `/costs` added as an alias for `/tokens`.
@@ -50,7 +59,7 @@
 - `/help` output aligned into a single column, with an outdated model reference removed.
 - Bug fixes and internal improvements.
 
-## v0.4.0 — 2026-06-13
+## v0.4.0 - 2026-06-13
 
 - Shell mode: prefix any input with `!` to run a local shell command without leaving the agent loop.
 - Ctrl-R fuzzy history search picker with scored ranking.
@@ -67,12 +76,12 @@
 - Fixed Shift-Enter / Alt-Enter newline insertion, multi-line history navigation asymmetry, Ctrl-R picker layout corruption, tab-completion input drift, `@`-completion going dead, Ctrl-W WORDCHARS handling, `fd` glob search returning zero results, and inline underscore rendering.
 - Bug fixes and internal improvements.
 
-## v0.3.1 — 2026-06-12
+## v0.3.1 - 2026-06-12
 
 - Windows binaries no longer report a corrupted signature
 - Bug fixes and internal improvements.
 
-## v0.3.0 — 2026-06-12
+## v0.3.0 - 2026-06-12
 
 - Distributes as self-contained native binaries (macOS, Linux, Windows; x64 and ARM64).
 - Installer offers to add the install directory to `PATH` via the user's shell rc file.
