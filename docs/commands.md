@@ -6,7 +6,16 @@ This document covers every command and keyboard shortcut available in the intera
 
 ## Table of Contents
 
+- [CLI Flags](#cli-flags)
 - [Slash Commands](#slash-commands)
+  - [Core](#core)
+  - [Conversation](#conversation)
+  - [Session](#session)
+  - [Files & Attachments](#files--attachments)
+  - [Auth](#auth)
+  - [Organisation](#organisation)
+  - [Project](#project)
+  - [Skills](#skills)
 - [Shell Mode](#shell-mode)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
   - [Ctrl- Shortcuts](#ctrl--shortcuts)
@@ -14,6 +23,30 @@ This document covers every command and keyboard shortcut available in the intera
   - [History](#history)
   - [Multi-line Input](#multi-line-input)
   - [Tab Completion](#tab-completion)
+
+---
+
+## CLI Flags
+
+Flags can be passed when launching `monofoundry` from the terminal.
+
+```
+monofoundry [message]           Interactive REPL (or one-shot if message given)
+monofoundry auth login          Sign in with Google or Microsoft OAuth
+monofoundry auth login --apikey Sign in with an API key
+monofoundry auth logout         Remove stored credentials
+monofoundry auth status         Show current auth status
+```
+
+| Flag                        | Description                                          |
+| --------------------------- | ---------------------------------------------------- |
+| `--version`, `-v`           | Print the version and exit                           |
+| `--cwd <path>`              | Set workspace root (default: current directory)      |
+| `--endpoint <url>`          | Override the API endpoint                            |
+| `--model <id>`              | Start the session with a specific model pre-selected |
+| `--project <id\|key\|name>` | Scope the session to a workspace project             |
+| `--resume <id>`             | Resume a previous conversation by ID                 |
+| `--approve`                 | Require approval before applying code edits          |
 
 ---
 
@@ -29,7 +62,7 @@ Slash commands are available inside the interactive REPL. Type `/` to trigger ta
 | `/quit`         | `/exit`  | Exit the REPL (saves input history first)                 |
 | `/new`          | `/clear` | Start a new conversation (clears current conversation ID) |
 | `/stash [text]` | —        | Stash input or open the stash picker                      |
-| `/update`       | —        | Update the tool to the latest version                     |
+| `/update`       | —        | Check for and apply updates to the latest version         |
 
 #### `/help`
 
@@ -38,6 +71,7 @@ Prints a formatted list of every registered command, its aliases, and its descri
 ```
 > /help
   /approve          Toggle edit approval mode
+  /attach <path>    Upload a file and attach it to your next message
   /clarify <msg>    Steer the agent mid-turn ...
   ...
   !<command>        Run a shell command locally (e.g. !ls, !git status)
@@ -95,9 +129,9 @@ Update available: v0.5.0 (current: v0.4.0)
 
 | Command          | Aliases  | Description                                                                                                                          |
 | ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `/resume [id]`   | -        | Resume the most recent conversation, or a specific one by ID                                                                         |
-| `/conversations` | -        | Browse and resume local and project-linked conversations                                                                             |
-| `/history`       | -        | Show recent remote conversation history (up to 10)                                                                                   |
+| `/resume [id]`   | —        | Resume the most recent conversation, or a specific one by ID                                                                         |
+| `/conversations` | —        | Browse and resume local and project-linked conversations                                                                             |
+| `/history`       | —        | Show recent remote conversation history (up to 10)                                                                                   |
 | `/tokens`        | `/costs` | Display token usage and estimated costs for session, conversation, project, and overall — with a per-model breakdown under each tier |
 
 #### `/resume [id]`
@@ -170,7 +204,7 @@ Model rows are only shown when usage spans more than one model in a tier. They a
 
 #### `/model [id|reset]`
 
-- No argument: shows the current model and opens a filterable picker.
+- No argument: shows the current model and opens a filterable picker (sorted by frecency).
 - With a model ID or display name: sets that model immediately (validated against the catalogue).
 - `reset` or `default`: clears the persisted model preference and reverts to the server default.
 
@@ -231,6 +265,144 @@ Enables nosave mode for the session, then optionally runs a message or another s
 
 > /nosave /commit
 # runs the /commit skill in nosave mode
+```
+
+---
+
+### Files & Attachments
+
+| Command          | Description                                                            |
+| ---------------- | ---------------------------------------------------------------------- |
+| `/attach <path>` | Upload a file and stage it for your next message                       |
+| `/paste`         | Capture an image from the clipboard and attach it to your next message |
+
+You can also attach files inline in any message using `@`-prefixed paths — see [@ file completion](#-file-completion) and [Inline @-path attachments](#inline--path-attachments) below.
+
+#### `/attach <path>`
+
+Uploads the file at `<path>` and stages it to be sent with your next message. Relative paths are resolved from the current working directory; `~/` is expanded to your home directory. The file is uploaded immediately, and a confirmation line is shown above the prompt.
+
+Binary files (images, PDFs, Office documents, archives, etc.) are uploaded to the server. Text files are left for the agent to read directly via its file tools.
+
+```
+> /attach ./diagram.png
+✓ diagram.png (42 KB)  image/png
+
+> /attach ~/Downloads/spec.pdf
+✓ spec.pdf (1.2 MB)  application/pdf
+```
+
+Multiple `/attach` calls before submitting a message will all be included together.
+
+#### `/paste`
+
+Captures an image from the OS clipboard (e.g. a screenshot taken with Cmd-Shift-4), writes it to a temporary file, and inserts an `@<tmp-path>` token into the input buffer. The image is uploaded when you submit the message.
+
+```
+> /paste
+# if an image is in the clipboard:
+Captured clipboard image → /tmp/monofoundry-clip-xxxx.png
+# the @-path is inserted into the input buffer for you
+
+# if the clipboard has no image:
+No image found in the clipboard.
+```
+
+#### Inline @-path attachments
+
+You can reference files directly in any message by prefixing the path with `@`. When you submit the message, binary files are automatically uploaded and their IDs sent to the agent. Text files are left as-is for the agent to read.
+
+- Paths are relative to `--cwd` (default: current directory).
+- `~/` is expanded to your home directory.
+- Absolute paths are accepted.
+- Multiple `@` references can appear in the same message.
+- Duplicate paths in the same message are de-duplicated.
+
+```
+> Can you review @src/auth.ts and the design in @docs/auth-flow.png?
+# auth.ts is text — the agent reads it with its tools
+# auth-flow.png is binary — uploaded and sent as an attachment
+
+> Summarise the contents of @~/Downloads/report.pdf
+```
+
+See also: [@ file completion](#-file-completion) for tab-completing paths as you type.
+
+---
+
+### Auth
+
+| Command                | Description                                      |
+| ---------------------- | ------------------------------------------------ |
+| `/login [--microsoft]` | Sign in with Google (default) or Microsoft OAuth |
+| `/logout`              | Sign out and clear stored credentials            |
+| `/status`              | Show current authentication status               |
+
+These commands mirror the `monofoundry auth` CLI subcommands but work directly from the REPL so you can re-authenticate without restarting.
+
+> **Note:** API key login (`--apikey`) is not supported from inside the REPL. Use `monofoundry auth login --apikey` from the terminal instead.
+
+#### `/login [--microsoft]`
+
+Opens a browser for OAuth sign-in. Defaults to Google; pass `--microsoft` to use Microsoft.
+
+```
+> /login
+Opening browser for sign-in...
+Signed in as dom@monoai.co
+
+> /login --microsoft
+Opening browser for sign-in...
+Signed in as dom@monoai.co
+```
+
+#### `/logout`
+
+Clears all stored credentials from `~/.monofoundry/config.json`.
+
+```
+> /logout
+Signed out.
+```
+
+#### `/status`
+
+Shows who is currently signed in (or an error if you are not).
+
+```
+> /status
+Signed in as dom@monoai.co
+```
+
+---
+
+### Organisation
+
+| Command                    | Aliases         | Description                                     |
+| -------------------------- | --------------- | ----------------------------------------------- |
+| `/org [id\|name\|default]` | `/organisation` | Switch the active organisation for this session |
+
+#### `/org [id|name|default]`
+
+- No argument: shows the current selection and opens a filterable picker.
+- With a value: resolves and selects the matching organisation directly (by ID or display name).
+- `default` / `clear` / `none` / `reset`: reverts to the account's default organisation.
+
+Switching organisations cascades: the model cache is cleared and refreshed, any project/work-item selection is reset, and a new conversation is started (since each is homed within an org).
+
+```
+> /org
+# opens picker:
+  monō ai          (current)
+  Acme Corp
+  Use default organisation
+  Cancel
+
+> /org Acme Corp
+Organisation: Acme Corp  — model cache cleared, new conversation
+
+> /org default
+Organisation: default  — model cache cleared, new conversation
 ```
 
 ---
@@ -316,16 +488,16 @@ Any input that starts with `!` runs the rest of the line as a local shell comman
 Timeout: 60 seconds.
 
 ```
-> !ls src/
+> ! ls src/
 api.ts  auth.ts  commands.ts  ...
 [exit 0]
 
-> !git status
+> ! git status
 On branch main
 nothing to commit, working tree clean
 [exit 0]
 
-> !pnpm test
+> ! pnpm test
 # runs the test suite locally
 [exit 0]
 ```
@@ -339,7 +511,7 @@ nothing to commit, working tree clean
 | Shortcut | Action                                                                                                   |
 | -------- | -------------------------------------------------------------------------------------------------------- |
 | `Ctrl-C` | Interrupt — cancel the running turn, or clear the current buffer                                         |
-| `Ctrl-D` | Exit the REPL (equivalent to `/quit`)                                                                    |
+| `Ctrl-D` | Exit the REPL — double-press to confirm (equivalent to `/quit`)                                          |
 | `Ctrl-A` | Move cursor to the start of the line                                                                     |
 | `Ctrl-E` | Move cursor to the end of the line                                                                       |
 | `Ctrl-U` | Delete everything from the start of the line to the cursor                                               |
@@ -351,7 +523,9 @@ nothing to commit, working tree clean
 
 #### `Ctrl-C`
 
-While the agent is running: aborts the current turn. While typing: clears the buffer.
+- **While the agent is generating:** aborts the current turn immediately.
+- **While typing (non-empty buffer):** clears the buffer.
+- **While idle (empty buffer):** arms a double-press window. Press `Ctrl-C` a second time within ~2 seconds to exit.
 
 #### `Ctrl-R` — History search
 
@@ -379,15 +553,15 @@ First press with an empty buffer (or second press): pops the most recently stash
 
 ### Navigation
 
-| Key               | Action                                                  |
-| ----------------- | ------------------------------------------------------- |
-| `←` / `→`         | Move cursor one character left / right                  |
-| `Home`            | Move cursor to the start of the line (same as `Ctrl-A`) |
-| `End`             | Move cursor to the end of the line (same as `Ctrl-E`)   |
-| `Alt-←` / `Alt-B` | Move cursor one word to the left                        |
-| `Alt-→` / `Alt-F` | Move cursor one word to the right                       |
-| `Backspace`       | Delete character before the cursor                      |
-| `Delete`          | Delete character at the cursor                          |
+| Key                       | Action                                                  |
+| ------------------------- | ------------------------------------------------------- |
+| `←` / `→`                 | Move cursor one character left / right                  |
+| `Home`                    | Move cursor to the start of the line (same as `Ctrl-A`) |
+| `End`                     | Move cursor to the end of the line (same as `Ctrl-E`)   |
+| `Alt/Opt-←` / `Alt/Opt-B` | Move cursor one word to the left                        |
+| `Alt/Opt-→` / `Alt/Opt-F` | Move cursor one word to the right                       |
+| `Backspace`               | Delete character before the cursor                      |
+| `Delete`                  | Delete character at the cursor                          |
 
 ---
 
@@ -399,7 +573,7 @@ First press with an empty buffer (or second press): pops the most recently stash
 | `↓`      | Next history entry                                                       |
 | `Ctrl-R` | Open the live-filter history search picker                               |
 
-History is persisted across sessions at `~/.monofoundry/history`.
+History is persisted per-project at `~/.monofoundry/projects/<slug>/history`.
 
 When multiple messages are queued (e.g. typed while the agent was running), pressing `↑` on an empty buffer recalls the most recently queued message for editing, removing it from the queue.
 
@@ -407,11 +581,11 @@ When multiple messages are queued (e.g. typed while the agent was running), pres
 
 ### Multi-line Input
 
-| Key           | Action                                                           |
-| ------------- | ---------------------------------------------------------------- |
-| `Shift-Enter` | Insert a literal newline at the cursor position                  |
-| `Enter`       | Submit the message (even if it contains newlines)                |
-| `↑` / `↓`     | Move cursor up / down a visual line when the buffer has newlines |
+| Key                             | Action                                                           |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `Shift-Enter` / `Alt/Opt-Enter` | Insert a literal newline at the cursor position                  |
+| `Enter`                         | Submit the message (even if it contains newlines)                |
+| `↑` / `↓`                       | Move cursor up / down a visual line when the buffer has newlines |
 
 Pasted content (bracketed paste) is automatically preserved with its original newlines intact.
 
@@ -450,6 +624,16 @@ Pasted content (bracketed paste) is automatically preserved with its original ne
 > Summarise @src/re<Tab>   →  @src/render/   (if a directory matches)
 > Diff @src/<Tab><Tab>     →  cycles through all files under src/
 > Check @~/.<Tab>          →  shows dotfiles in home directory
+```
+
+#### Inline @-path attachments
+
+When you submit a message containing `@`-prefixed paths, binary files (images, PDFs, Office documents, etc.) are automatically uploaded and sent as attachments. Text files are left as-is — the agent reads them using its file tools. The message text itself is not modified.
+
+```
+> Explain the architecture in @docs/overview.png and @README.md
+# overview.png  → uploaded as an attachment
+# README.md     → agent reads it directly (text file)
 ```
 
 ---

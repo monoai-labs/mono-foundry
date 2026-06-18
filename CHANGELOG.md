@@ -1,6 +1,13 @@
 # Changelog
 
-All notable changes to monofoundry are documented here.
+## v0.9.0 — 2026-06-18
+
+- Local MCP server discovery and tool invocation from the CLI.
+- Interactive authentication onboarding flow for first-time users.
+- Per-turn and session cost reporting when model pricing is available.
+- Improved exit experience with usage summary and correct prompt positioning.
+- Git status tool now handles multi-repo workspaces and distinguishes intent-to-add entries.
+- Bug fixes and internal improvements.
 
 ## v0.8.0 — 2026-06-16
 
