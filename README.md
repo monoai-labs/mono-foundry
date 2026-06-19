@@ -78,7 +78,7 @@ Inside the interactive REPL, slash commands are available:
 | `/clarify <msg>` | Steer the agent mid-turn                      |
 | `/tokens`        | Display token usage stats                     |
 | `/project`       | Select the workspace project for this session |
-| `/workitem`      | Select a workitem for this session            |
+| `/workitem`      | Select, create, or implement a work item      |
 | `/approve`       | Toggle approval mode for code edits           |
 | `/init`          | Generate a MONOFOUNDRY.md for the project     |
 | `/skills`        | List discovered skills                        |
@@ -106,6 +106,7 @@ Conversation history is stored locally under `~/.monofoundry/projects/<slug>/con
 - [MCP Servers](docs/mcp.md) - configure local MCP servers to extend the agent with custom tools
 - [Skills](docs/skills.md) - create and use reusable skill instruction sets
 - [Files & Attachments](docs/files.md) - attach files via @-paths, /attach, and /paste
+- [Subagents](docs/subagents.md) - documentation on subagents implementation
 - [Security](docs/security.md) - network architecture, credential encryption, tool execution model, access control, and hardening
 
 ---

@@ -9,6 +9,7 @@ Welcome to the monō foundry documentation. monō foundry is a thin-client CLI f
 | [Commands & Shortcuts](commands.md) | Full reference for CLI flags, slash commands, keyboard shortcuts, and shell mode. |
 | [MCP Servers](mcp.md) | Configure local MCP (Model Context Protocol) servers to extend the agent with custom tools. |
 | [Skills](skills.md) | Create and use reusable skill instruction sets (SKILL.md files) to guide the agent on specific tasks. |
+| [Subagents](subagents.md) | How the backend spawns parallel child conversations, visual attribution, tool execution, and prompting suggestions. |
 | [Files & Attachments](files.md) | Attach files to messages via `@`-paths, `/attach`, and `/paste`, with binary/text classification and upload limits. |
 | [Security](security.md) | Network architecture, credential encryption, tool execution model, access control, and hardening recommendations. |
 

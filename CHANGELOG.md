@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.12.0 — 2026-06-19
+
+- Automatic stream recovery on connection loss with SSE event ID tracking and exponential backoff reconnect.
+- Automatic credential refresh on auth expiry with transparent OAuth re-login.
+- Subagent spawning and orchestration — CLI now launches child agents concurrently with independent tool routing and visual attribution.
+- Escape key now only aborts in-flight generation, preserving entered input.
+- `/workitem implement <tag> | <id>` shorthand command for direct work item implementation.
+- Align exit summary stats across parent and subagent tiers.
+- Bug fixes and internal improvements.
+
 ## v0.11.0 - 2026-06-19
 
 - Added external editor support (Ctrl-X Ctrl-E) for composing longer prompts.
