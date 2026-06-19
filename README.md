@@ -80,17 +80,33 @@ Inside the interactive REPL, slash commands are available:
 | `/project`       | Select the workspace project for this session |
 | `/workitem`      | Select a workitem for this session            |
 | `/approve`       | Toggle approval mode for code edits           |
+| `/init`          | Generate a MONOFOUNDRY.md for the project     |
 | `/skills`        | List discovered skills                        |
 | `/<skill-name>`  | Run a discovered skill as a turn              |
 | `/update`        | Check for and install updates                 |
 | `/help`          | Show help                                     |
 | `/quit`          | Exit                                          |
 
+### Keybindings
+
+| Key             | Action                        |
+| --------------- | ----------------------------- |
+| `Ctrl-R`        | Search input history (picker) |
+| `↑` / `↓`       | Navigate history              |
+| `Ctrl-X Ctrl-E` | Edit prompt in `$EDITOR`      |
+| `Ctrl-C`        | Interrupt / cancel            |
+| `Ctrl-D`        | Exit                          |
+
 Conversation history is stored locally under `~/.monofoundry/projects/<slug>/conversations/`.
 
 ## Docs
 
+- [Documentation Index](docs/index.md) - high-level index of all documentation
 - [Commands & Shortcuts](docs/commands.md) - full reference for slash commands, keyboard shortcuts, and shell mode
+- [MCP Servers](docs/mcp.md) - configure local MCP servers to extend the agent with custom tools
+- [Skills](docs/skills.md) - create and use reusable skill instruction sets
+- [Files & Attachments](docs/files.md) - attach files via @-paths, /attach, and /paste
+- [Security](docs/security.md) - network architecture, credential encryption, tool execution model, access control, and hardening
 
 ---
 

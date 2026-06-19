@@ -64,6 +64,7 @@ Slash commands are available inside the interactive REPL. Type `/` to trigger ta
 | `/new`          | `/clear` | Start a new conversation (clears current conversation ID) |
 | `/stash [text]` | -        | Stash input or open the stash picker                      |
 | `/update`       | -        | Check for and apply updates to the latest version         |
+| `/init`         | -        | Generate a MONOFOUNDRY.md instruction file for the project |
 
 #### `/help`
 
@@ -78,6 +79,7 @@ Prints a formatted list of every registered command, its aliases, and its descri
   !<command>        Run a shell command locally (e.g. !ls, !git status)
   Ctrl-R            Search input history
   Ctrl-S            Stash current input (second Ctrl-S restores)
+  Ctrl-X Ctrl-E     Edit current input in $EDITOR
 ```
 
 #### `/new` (alias `/clear`)
@@ -123,6 +125,35 @@ Checks for any available updates.
 Checking for updates
 Update available: v0.5.0 (current: v0.4.0)
 ```
+
+#### `/init`
+
+Generates a `MONOFOUNDRY.md` instruction file for the current project by detecting metadata from the filesystem. The file is picked up automatically as project instructions on the next turn (the context cache is cleared after writing).
+
+**Detected metadata:**
+
+- **Project name** — from `package.json` `name` (scope stripped), falling back to the directory name.
+- **Package manager** — inferred from lock files (`pnpm-lock.yaml` → pnpm, `yarn.lock` → yarn, `package-lock.json` → npm, `bun.lockb` → bun); defaults to npm if `package.json` exists without a lock file.
+- **Frameworks** — Next.js, Vite, Vue.js, Svelte, Angular, Express, React (detected from config files and `package.json`).
+- **Languages** — TypeScript, JavaScript, Python, Rust, Go, Java (detected from config files).
+- **Scripts** — from `package.json` `scripts`, with human-friendly descriptions for common names (`build`, `test`, `lint`, `dev`, etc.); npm lifecycle scripts (`prepare`, `prepack`, etc.) are skipped. Makefile projects get standard `make` targets instead.
+
+**Generated template sections:**
+
+- `# Project Name` + description (if present in `package.json`)
+- `## Commands` — detected scripts with `<pm> <script>` invocations
+- `## Architecture` — placeholder for you to fill in
+- `## Conventions` — placeholder for you to fill in
+- `## Tech Stack` — languages, frameworks, config files, package manager (only if at least one was detected)
+
+If `MONOFOUNDRY.md` already exists, you're prompted to overwrite or cancel.
+
+```
+> /init
+Created MONOFOUNDRY.md — project instructions will load on the next turn.
+```
+
+After generation, edit the `## Architecture` and `## Conventions` sections to describe your project — these are left as placeholders for human (or agent) fill-in.
 
 ---
 
@@ -485,7 +516,7 @@ Work item cleared.
 | `/skills`             | List all discovered skills                                |
 | `/<skill-name> [arg]` | Run a skill as a turn, with an optional argument appended |
 
-Skills are discovered from SKILL.md files in the workspace and your home directory. See the [Skills documentation](https://github.com/monoai-labs/mono-foundry) for the discovery paths and file format.
+Skills are discovered from SKILL.md files in the workspace and your home directory. See the [Skills documentation](skills.md) for the discovery paths and file format.
 
 ```
 > /skills
@@ -537,6 +568,7 @@ nothing to commit, working tree clean
 | `Ctrl-W` | Delete the word immediately before the cursor                                                            |
 | `Ctrl-R` | Open the history search picker                                                                           |
 | `Ctrl-S` | Stash / restore: stash the buffer on first press; restore (pop) on the second press with an empty buffer |
+| `Ctrl-X Ctrl-E` | Open the current input in `$VISUAL` or `$EDITOR` (falling back to `vi`); the saved content replaces the buffer |
 | `Ctrl-←` | Move cursor one word to the left                                                                         |
 | `Ctrl-→` | Move cursor one word to the right                                                                        |
 
@@ -566,6 +598,19 @@ First press with an empty buffer (or second press): pops the most recently stash
 # typing: "explain the auth flow"
 # Ctrl-S → buffer cleared, "explain the auth flow" stashed
 # Ctrl-S (empty buffer) → "explain the auth flow" restored
+```
+
+#### `Ctrl-X Ctrl-E` - Edit in external editor
+
+Opens the current input buffer in your `$VISUAL` or `$EDITOR` (falling back to `vi` if neither is set), mirroring the bash/zsh readline behaviour. Save and quit in the external editor, and the edited content replaces the input buffer. A single trailing newline is stripped (most editors append one on save).
+
+The chord works as a two-key sequence: press `Ctrl-X` first (enters a prefix state), then `Ctrl-E`. Any other key after `Ctrl-X` cancels the prefix and processes normally. The shortcut is ignored when a picker is open.
+
+```
+# typing a long prompt, then:
+# Ctrl-X Ctrl-E → opens $EDITOR with the buffer content
+# edit, save, quit → buffer replaced with edited text
+# Enter → submit
 ```
 
 ---

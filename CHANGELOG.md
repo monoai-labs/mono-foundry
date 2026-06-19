@@ -1,6 +1,17 @@
 # Changelog
 
-## v0.10.0 — 2026-06-18
+## v0.11.0 - 2026-06-19
+
+- Added external editor support (Ctrl-X Ctrl-E) for composing longer prompts.
+- Added `/init` command to scaffold MONOFOUNDRY.md from project metadata.
+- Added support for multiple agent instruction file formats (MONOFOUNDRY.md, CLAUDE.md, AGENTS.md, GEMINI.md, .github/copilot-instructions.md, .cursorrules) with priority fallback.
+- Added comprehensive security documentation and expanded approval gate to cover code execution and file moves.
+- Added documentation guides for MCP configuration, skills, files, and config directory structure.
+- Fixed file path escaping in @-token completion and drag-drop for paths with spaces and internal quotes.
+- Fixed Up key history navigation incorrectly entering search mode.
+- Bug fixes and internal improvements.
+
+## v0.10.0 - 2026-06-18
 
 - Create work items directly from the REPL with `/workitem create`.
 - Alt+M shortcut to switch models mid-input without losing your buffer.
