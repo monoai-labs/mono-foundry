@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.12.2 — 2026-06-20
+
+- Fixed model pricing visibility when API returns bare array response or cache is empty
+- Fixed /clarify command silently dropping messages due to implicit 4-character tag heuristic
+- Spinner now remains visible throughout all generation phases and reconnection attempts
+- Input prompt colour now reflects whether input is queued during generation
+
 ## v0.12.1 — 2026-06-20
 
 - Fix crash on Windows
