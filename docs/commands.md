@@ -62,6 +62,7 @@ Slash commands are available inside the interactive REPL. Type `/` to trigger ta
 | `/help`         | -        | List all available commands and shortcuts                 |
 | `/quit`         | `/exit`  | Exit the REPL (saves input history first)                 |
 | `/new`          | `/clear` | Start a new conversation (clears current conversation ID) |
+| `/reset`        | -        | Reset session state (model, utility, nosave, approval) to defaults |
 | `/stash [text]` | -        | Stash input or open the stash picker                      |
 | `/update`       | -        | Check for and apply updates to the latest version         |
 | `/init`         | -        | Generate a MONOFOUNDRY.md instruction file for the project |
@@ -89,6 +90,22 @@ Clears the active conversation ID so the next message starts a fresh conversatio
 ```
 > /new
 Started new conversation.
+```
+
+#### `/reset`
+
+Resets all session-level state to defaults:
+
+- **Model** — clears the selected model and on-disk model cache (reverts to server default).
+- **Utility** — clears the selected utility type and on-disk utility cache (reverts to default).
+- **Nosave** — reverts to the config-derived default (off unless `saveConversation: false` in config).
+- **Approval** — turns off approval mode.
+
+Does **not** clear the conversation ID, project/work item selection, input history, or token usage. Use `/new` for a fresh conversation, or `/project clear` / `/workitem clear` for workspace selection.
+
+```
+> /reset
+Session state reset to defaults.
 ```
 
 #### `/quit` (alias `/exit`)

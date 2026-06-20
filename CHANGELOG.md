@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.12.1 — 2026-06-20
+
+- Fix crash on Windows
+- Fix quick-action picker leaving typed text in the input area
+- --utility and /utility options to change the utility used by the tool
+- /reset command to reset session-level settings (model, utility, save mode, approval mode) back to defaults
+- Bug fixes and internal improvements
+
 ## v0.12.0 — 2026-06-19
 
 - Automatic stream recovery on connection loss with SSE event ID tracking and exponential backoff reconnect.
