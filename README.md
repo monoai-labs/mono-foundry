@@ -4,6 +4,8 @@ A thin-client CLI for the [monō ai](https://app.monoai.co) coding agent. The ag
 
 Skills, agent instructions, and local context will all be automatically detected. This tool by default will assume all the permissions of the running user; use `/approve` if you want to approve steps, and sandbox it if you want additional protection.
 
+<img src="demo.gif" alt="monō foundry demo — project linking, workitem creation, agent implementation, and test verification" width="600" />
+
 ## Prerequisites
 
 - A monō ai account (Google/Microsoft SSO or an API key).

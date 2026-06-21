@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.13.0 — 2026-06-21
+
+- Polite re-authentication: token reload from disk, user prompt before browser opens, and cleaner one-shot abort flow.
+- Text search now consistently case-insensitive, excludes build artefacts and minified files, and filters by file extension.
+- Bug fixes and internal improvements.
+
 ## v0.12.2 — 2026-06-20
 
 - Fixed model pricing visibility when API returns bare array response or cache is empty
