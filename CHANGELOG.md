@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.13.1 — 2026-06-22
+
+- Daemon compatibility improvements.
+- Server-side subagent activity now visible in CLI: banners render when backend orchestrates sub-agents.
+- Code modularisation and improvements.
+
 ## v0.13.0 — 2026-06-21
 
 - Polite re-authentication: token reload from disk, user prompt before browser opens, and cleaner one-shot abort flow.
