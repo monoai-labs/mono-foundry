@@ -690,7 +690,7 @@ When multiple messages are queued (e.g. typed while the agent was running), pres
 
 | Key                             | Action                                                           |
 | ------------------------------- | ---------------------------------------------------------------- |
-| `Shift-Enter` / `Alt/Opt-Enter` | Insert a literal newline at the cursor position                  |
+| `Shift-Enter` / `Alt-Enter` (`Opt-Enter` on macOS) | Insert a literal newline at the cursor position                  |
 | `Enter`                         | Submit the message (even if it contains newlines)                |
 | `↑` / `↓`                       | Move cursor up / down a visual line when the buffer has newlines |
 

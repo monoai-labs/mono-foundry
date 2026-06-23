@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.14.0 — 2026-06-23
+
+- Improved network resilience
+- Fixed `apply_diff` and `search_and_replace` tool result field mismatches that caused edits to silently no-op.
+- Fixed directory listing so recursive walks no longer block the CLI and now respect `.git` and `node_modules` boundaries.
+- Fixed drag-and-drop uploads to handle shell-escaped file paths correctly.
+- Workspace context now builds asynchronously at startup, with a 5-second timeout fallback to keep the first response prompt.
+- Model identity now uses stable server-issued identifiers with automatic migration for legacy persisted conversations.
+- Placeholder hints display at startup and during idle.
+- Fixed `/utility` listing utilities outside the current organisation.
+- Bug fixes and internal improvements.
+
 ## v0.13.1 — 2026-06-22
 
 - Daemon compatibility improvements.
