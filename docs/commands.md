@@ -7,6 +7,7 @@ This document covers every command and keyboard shortcut available in the intera
 ## Table of Contents
 
 - [CLI Flags](#cli-flags)
+- [Top-level Daemon Commands](#top-level-daemon-commands)
 - [Slash Commands](#slash-commands)
   - [Core](#core)
   - [Conversation](#conversation)
@@ -16,6 +17,7 @@ This document covers every command and keyboard shortcut available in the intera
   - [Organisation](#organisation)
   - [Project](#project)
   - [Skills](#skills)
+  - [Daemon Diagnostics](#daemon-diagnostics)
 - [Shell Mode](#shell-mode)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
   - [Ctrl- Shortcuts](#ctrl--shortcuts)
@@ -24,6 +26,7 @@ This document covers every command and keyboard shortcut available in the intera
   - [Multi-line Input](#multi-line-input)
   - [Tab Completion](#tab-completion)
   - [Model Switching](#model-switching)
+  - [Status Bar Toggles](#status-bar-toggles)
 
 ---
 
@@ -37,6 +40,9 @@ monofoundry auth login          Sign in with Google or Microsoft OAuth
 monofoundry auth login --apikey Sign in with an API key
 monofoundry auth logout         Remove stored credentials
 monofoundry auth status         Show current auth status
+monofoundry daemon status       Show daemon status
+monofoundry daemon logs         Show daemon logs
+monofoundry doctor              Run local diagnostics
 ```
 
 | Flag                        | Description                                          |
@@ -48,6 +54,30 @@ monofoundry auth status         Show current auth status
 | `--project <id\|key\|name>` | Scope the session to a workspace project             |
 | `--resume <id>`             | Resume a previous conversation by ID                 |
 | `--approve`                 | Require approval before applying code edits          |
+| `--daemon-client`           | Force routing turns through a daemon                 |
+| `--daemon-url <url>`        | Daemon base URL for `--daemon-client`                |
+| `--daemon-port <n>`         | Shorthand for `--daemon-url http://127.0.0.1:<n>`    |
+| `--daemon-token <token>`    | Bearer token for `--daemon-client`                   |
+| `--direct`, `--no-daemon`   | Run without the daemon                               |
+
+---
+
+## Top-level Daemon Commands
+
+Interactive REPL and one-shot runs use the local daemon by default. These top-level commands inspect and manage that local runtime.
+
+| Command                               | Description                                                                                            |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `monofoundry daemon status`           | Show daemon discovery and readiness details.                                                           |
+| `monofoundry daemon start`            | Start the daemon in the background when daemon support is bundled.                                     |
+| `monofoundry daemon stop`             | Stop the discovered daemon.                                                                            |
+| `monofoundry daemon restart`          | Restart the discovered daemon.                                                                         |
+| `monofoundry daemon logs [--lines n]` | Show recent daemon log lines; defaults to 100 lines.                                                   |
+| `monofoundry doctor`                  | Run local diagnostics for daemon discovery, readiness, version compatibility, logs, and config health. |
+
+Use `--direct`, `--no-daemon`, or `MONOFOUNDRY_NO_DAEMON=1` to bypass the daemon for recovery. Use `--daemon-client` and the daemon URL/token flags when you want explicit daemon diagnostics that fail closed instead of falling back to direct mode.
+
+See [Daemon Local Runtime](daemon.md) for the full guide.
 
 ---
 
@@ -57,15 +87,17 @@ Slash commands are available inside the interactive REPL. Type `/` to trigger ta
 
 ### Core
 
-| Command         | Aliases  | Description                                               |
-| --------------- | -------- | --------------------------------------------------------- |
-| `/help`         | -        | List all available commands and shortcuts                 |
-| `/quit`         | `/exit`  | Exit the REPL (saves input history first)                 |
-| `/new`          | `/clear` | Start a new conversation (clears current conversation ID) |
+| Command         | Aliases  | Description                                                        |
+| --------------- | -------- | ------------------------------------------------------------------ |
+| `/help`         | -        | List all available commands and shortcuts                          |
+| `/quit`         | `/exit`  | Exit the REPL (saves input history first)                          |
+| `/new`          | `/clear` | Start a new conversation (clears current conversation ID)          |
 | `/reset`        | -        | Reset session state (model, utility, nosave, approval) to defaults |
-| `/stash [text]` | -        | Stash input or open the stash picker                      |
-| `/update`       | -        | Check for and apply updates to the latest version         |
-| `/init`         | -        | Generate a MONOFOUNDRY.md instruction file for the project |
+| `/stash [text]` | -        | Stash input or open the stash picker                               |
+| `/update`       | -        | Check for and apply updates to the latest version                  |
+| `/init`         | -        | Generate a MONOFOUNDRY.md instruction file for the project         |
+| `/daemon`       | -        | Show daemon status or recent logs                                  |
+| `/doctor`       | -        | Run local monofoundry diagnostics                                  |
 
 #### `/help`
 
@@ -96,10 +128,10 @@ Started new conversation.
 
 Resets all session-level state to defaults:
 
-- **Model** — clears the selected model and on-disk model cache (reverts to server default).
-- **Utility** — clears the selected utility type and on-disk utility cache (reverts to default).
-- **Nosave** — reverts to the config-derived default (off unless `saveConversation: false` in config).
-- **Approval** — turns off approval mode.
+- **Model** - clears the selected model and on-disk model cache (reverts to server default).
+- **Utility** - clears the selected utility type and on-disk utility cache (reverts to default).
+- **Nosave** - reverts to the config-derived default (off unless `saveConversation: false` in config).
+- **Approval** - turns off approval mode.
 
 Does **not** clear the conversation ID, project/work item selection, input history, or token usage. Use `/new` for a fresh conversation, or `/project clear` / `/workitem clear` for workspace selection.
 
@@ -149,28 +181,28 @@ Generates a `MONOFOUNDRY.md` instruction file for the current project by detecti
 
 **Detected metadata:**
 
-- **Project name** — from `package.json` `name` (scope stripped), falling back to the directory name.
-- **Package manager** — inferred from lock files (`pnpm-lock.yaml` → pnpm, `yarn.lock` → yarn, `package-lock.json` → npm, `bun.lockb` → bun); defaults to npm if `package.json` exists without a lock file.
-- **Frameworks** — Next.js, Vite, Vue.js, Svelte, Angular, Express, React (detected from config files and `package.json`).
-- **Languages** — TypeScript, JavaScript, Python, Rust, Go, Java (detected from config files).
-- **Scripts** — from `package.json` `scripts`, with human-friendly descriptions for common names (`build`, `test`, `lint`, `dev`, etc.); npm lifecycle scripts (`prepare`, `prepack`, etc.) are skipped. Makefile projects get standard `make` targets instead.
+- **Project name** - from `package.json` `name` (scope stripped), falling back to the directory name.
+- **Package manager** - inferred from lock files (`pnpm-lock.yaml` → pnpm, `yarn.lock` → yarn, `package-lock.json` → npm, `bun.lockb` → bun); defaults to npm if `package.json` exists without a lock file.
+- **Frameworks** - Next.js, Vite, Vue.js, Svelte, Angular, Express, React (detected from config files and `package.json`).
+- **Languages** - TypeScript, JavaScript, Python, Rust, Go, Java (detected from config files).
+- **Scripts** - from `package.json` `scripts`, with human-friendly descriptions for common names (`build`, `test`, `lint`, `dev`, etc.); npm lifecycle scripts (`prepare`, `prepack`, etc.) are skipped. Makefile projects get standard `make` targets instead.
 
 **Generated template sections:**
 
 - `# Project Name` + description (if present in `package.json`)
-- `## Commands` — detected scripts with `<pm> <script>` invocations
-- `## Architecture` — placeholder for you to fill in
-- `## Conventions` — placeholder for you to fill in
-- `## Tech Stack` — languages, frameworks, config files, package manager (only if at least one was detected)
+- `## Commands` - detected scripts with `<pm> <script>` invocations
+- `## Architecture` - placeholder for you to fill in
+- `## Conventions` - placeholder for you to fill in
+- `## Tech Stack` - languages, frameworks, config files, package manager (only if at least one was detected)
 
 If `MONOFOUNDRY.md` already exists, you're prompted to overwrite or cancel.
 
 ```
 > /init
-Created MONOFOUNDRY.md — project instructions will load on the next turn.
+Created MONOFOUNDRY.md - project instructions will load on the next turn.
 ```
 
-After generation, edit the `## Architecture` and `## Conventions` sections to describe your project — these are left as placeholders for human (or agent) fill-in.
+After generation, edit the `## Architecture` and `## Conventions` sections to describe your project - these are left as placeholders for human (or agent) fill-in.
 
 ---
 
@@ -275,7 +307,7 @@ Model set to: Claude Opus 4.8
 Model reset to default.
 ```
 
-> **Keyboard shortcut:** Press `Alt/Opt-M` at any time to open the model picker without clearing your input — see [Model Switching](#model-switching).
+> **Keyboard shortcut:** Press `Alt/Opt-M` at any time to open the model picker without clearing your input - see [Model Switching](#model-switching).
 
 #### `/approve`
 
@@ -495,10 +527,10 @@ Requires a project to be selected first.
 
 **Sub-commands:**
 
-- `create <title>` — Create a new work item in the current project. The title can be supplied inline (optionally quoted with `"` or `'`) or entered at a prompt if omitted. You're then prompted for an optional description (press Enter to skip). The new work item is auto-selected on success so you can start working immediately.
-- `<id|key|title>` — Select an existing work item directly.
-- `clear` / `none` / `reset` — Remove the current work item selection.
-- No argument — Open a filterable picker of all open work items.
+- `create <title>` - Create a new work item in the current project. The title can be supplied inline (optionally quoted with `"` or `'`) or entered at a prompt if omitted. You're then prompted for an optional description (press Enter to skip). The new work item is auto-selected on success so you can start working immediately.
+- `<id|key|title>` - Select an existing work item directly.
+- `clear` / `none` / `reset` - Remove the current work item selection.
+- No argument - Open a filterable picker of all open work items.
 
 ```
 > /workitem
@@ -548,6 +580,31 @@ Skills are discovered from SKILL.md files in the workspace and your home directo
 
 ---
 
+### Daemon Diagnostics
+
+| Command            | Description                                        |
+| ------------------ | -------------------------------------------------- |
+| `/daemon status`   | Show daemon status from inside the REPL.           |
+| `/daemon logs [n]` | Show recent daemon log lines from inside the REPL. |
+| `/doctor`          | Run local monofoundry diagnostics.                 |
+
+```
+> /daemon status
+Daemon ready
+  pid: 12345
+  port: 43123
+
+> /daemon logs 50
+# prints the last 50 daemon log lines
+
+> /doctor
+# prints local diagnostic checks and suggested recovery steps
+```
+
+These commands are safe during a turn, so they can be used while investigating daemon state without exiting the REPL.
+
+---
+
 ## Shell Mode
 
 Any input that starts with `!` runs the rest of the line as a local shell command via `bash -c`. Output is printed above the prompt; the agent is not involved.
@@ -575,19 +632,19 @@ nothing to commit, working tree clean
 
 ### Ctrl- Shortcuts
 
-| Shortcut | Action                                                                                                   |
-| -------- | -------------------------------------------------------------------------------------------------------- |
-| `Ctrl-C` | Interrupt - cancel the running turn, or clear the current buffer                                         |
-| `Ctrl-D` | Exit the REPL - double-press to confirm (equivalent to `/quit`)                                          |
-| `Ctrl-A` | Move cursor to the start of the line                                                                     |
-| `Ctrl-E` | Move cursor to the end of the line                                                                       |
-| `Ctrl-U` | Delete everything from the start of the line to the cursor                                               |
-| `Ctrl-W` | Delete the word immediately before the cursor                                                            |
-| `Ctrl-R` | Open the history search picker                                                                           |
-| `Ctrl-S` | Stash / restore: stash the buffer on first press; restore (pop) on the second press with an empty buffer |
+| Shortcut        | Action                                                                                                         |
+| --------------- | -------------------------------------------------------------------------------------------------------------- |
+| `Ctrl-C`        | Interrupt - cancel the running turn, or clear the current buffer                                               |
+| `Ctrl-D`        | Exit the REPL - double-press to confirm (equivalent to `/quit`)                                                |
+| `Ctrl-A`        | Move cursor to the start of the line                                                                           |
+| `Ctrl-E`        | Move cursor to the end of the line                                                                             |
+| `Ctrl-U`        | Delete everything from the start of the line to the cursor                                                     |
+| `Ctrl-W`        | Delete the word immediately before the cursor                                                                  |
+| `Ctrl-R`        | Open the history search picker                                                                                 |
+| `Ctrl-S`        | Stash / restore: stash the buffer on first press; restore (pop) on the second press with an empty buffer       |
 | `Ctrl-X Ctrl-E` | Open the current input in `$VISUAL` or `$EDITOR` (falling back to `vi`); the saved content replaces the buffer |
-| `Ctrl-←` | Move cursor one word to the left                                                                         |
-| `Ctrl-→` | Move cursor one word to the right                                                                        |
+| `Ctrl-←`        | Move cursor one word to the left                                                                               |
+| `Ctrl-→`        | Move cursor one word to the right                                                                              |
 
 #### `Ctrl-C`
 
@@ -634,15 +691,15 @@ The chord works as a two-key sequence: press `Ctrl-X` first (enters a prefix sta
 
 ### Model Switching
 
-| Shortcut   | Action                                                         |
-| ---------- | ------------------------------------------------------------- |
-| `Alt/Opt-M` | Open the model picker without clearing the input buffer       |
+| Shortcut    | Action                                                  |
+| ----------- | ------------------------------------------------------- |
+| `Alt/Opt-M` | Open the model picker without clearing the input buffer |
 
 #### `Alt/Opt-M` - Switch model
 
-Opens the model picker directly from the input line — no need to type `/model` and submit. The input buffer is preserved: the picker renders in the live region (temporarily hiding the input), and the buffer is restored when the picker closes, whether you select a model or cancel with `Escape`/`Ctrl-C`.
+Opens the model picker directly from the input line - no need to type `/model` and submit. The input buffer is preserved: the picker renders in the live region (temporarily hiding the input), and the buffer is restored when the picker closes, whether you select a model or cancel with `Escape`/`Ctrl-C`.
 
-The selected model persists per project directory and takes effect on the next turn. If the agent is currently generating, the model change applies to subsequent turns — the current turn is not interrupted. The shortcut is ignored if another picker is already open.
+The selected model persists per project directory and takes effect on the next turn. If the agent is currently generating, the model change applies to subsequent turns - the current turn is not interrupted. The shortcut is ignored if another picker is already open.
 
 ```
 # typing: "refactor the auth module to use█"
@@ -654,6 +711,39 @@ The selected model persists per project directory and takes effect on the next t
     Cancel
 # select a model → picker closes, buffer restored:
   ❯ refactor the auth module to use█
+```
+
+---
+
+### Status Bar Toggles
+
+| Shortcut    | Action                                                                    |
+| ----------- | ------------------------------------------------------------------------- |
+| `Alt/Opt-L` | Toggle the status-bar link between conversation, project, and workitem    |
+| `Alt/Opt-T` | Toggle the status-bar tokens segment between session cost and token count |
+
+#### `Alt/Opt-L` - Toggle URL
+
+Switches the URL segment in the status bar between showing the conversation URL, the project URL, or the workitem URL that the conversation is linked to. Nothing is shown if the conversation isn't yet linked to the server. No project or workitem URL will be shown if a project isn't selected or the conversation isn't linked to a workitem.
+
+The toggle preference is per-session and does not persist across restarts.
+
+```
+# status bar shows:  $0.0124
+# Alt/Opt-T → switches to:  12.4k tokens
+# Alt/Opt-T → switches back to:  $0.0124
+```
+
+#### `Alt/Opt-T` - Toggle tokens / cost display
+
+Switches the tokens segment in the status bar between showing the **session cost** (e.g. `$0.0124`) and the **raw token count** (e.g. `12.4k tokens`). The default is cost. When pricing data is unavailable (no cached model catalogue or no per-model pricing breakdown), the segment falls back to the token count regardless of the toggle state.
+
+The toggle preference is per-session and does not persist across restarts.
+
+```
+# status bar shows:  $0.0124
+# Alt/Opt-T → switches to:  12.4k tokens
+# Alt/Opt-T → switches back to:  $0.0124
 ```
 
 ---
@@ -688,11 +778,11 @@ When multiple messages are queued (e.g. typed while the agent was running), pres
 
 ### Multi-line Input
 
-| Key                             | Action                                                           |
-| ------------------------------- | ---------------------------------------------------------------- |
+| Key                                                | Action                                                           |
+| -------------------------------------------------- | ---------------------------------------------------------------- |
 | `Shift-Enter` / `Alt-Enter` (`Opt-Enter` on macOS) | Insert a literal newline at the cursor position                  |
-| `Enter`                         | Submit the message (even if it contains newlines)                |
-| `↑` / `↓`                       | Move cursor up / down a visual line when the buffer has newlines |
+| `Enter`                                            | Submit the message (even if it contains newlines)                |
+| `↑` / `↓`                                          | Move cursor up / down a visual line when the buffer has newlines |
 
 Pasted content (bracketed paste) is automatically preserved with its original newlines intact.
 

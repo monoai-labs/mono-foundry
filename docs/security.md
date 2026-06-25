@@ -8,7 +8,7 @@ An overview of the security properties of the monō foundry CLI - its network ar
 
 - [Overview](#overview)
 - [Network Architecture](#network-architecture)
-  - [Single Backend Endpoint](#single-backend-endpoint)
+  - [Backend and Local Daemon Endpoints](#backend-and-local-daemon-endpoints)
   - [Complete List of Network Endpoints](#complete-list-of-network-endpoints)
   - [No Outbound Calls from Tool Execution](#no-outbound-calls-from-tool-execution)
 - [Credential Storage & Encryption at Rest](#credential-storage--encryption-at-rest)
@@ -43,18 +43,20 @@ monō foundry is a **thin client**. The agent loop, model intelligence, tool sel
 
 - The CLI does not choose which tools to run - the backend does.
 - The CLI does not perform web searches, call third-party APIs, or make arbitrary network requests - the backend handles external lookups.
-- The CLI's network footprint is small and predictable: one backend endpoint for all agent communication, plus an optional GitHub API call for update checks.
+- The CLI's network footprint is small and predictable: one backend endpoint for Core communication, a loopback daemon connection for the default local runtime, plus optional GitHub calls for update checks and installs.
 - Credentials stored on disk are encrypted with a key that is not in the source code and not in the config file.
 
 ---
 
 ## Network Architecture
 
-### Single Backend Endpoint
+### Backend and Local Daemon Endpoints
 
-All agent communication - streaming responses, tool command dispatch, tool result posting, file uploads, model listing, conversation/project/work-item queries - goes to a single backend endpoint. The default is `https://core.monoai.co`, set at login time and stored in the local config. It can be overridden with `--endpoint <url>`.
+All Core agent communication - streaming responses, tool command dispatch, tool result posting, file uploads, model listing, conversation/project/work-item queries - goes to a single backend endpoint. The default is `https://core.monoai.co`, set at login time and stored in the local config. It can be overridden with `--endpoint <url>`.
 
-The CLI **never** makes HTTP requests to any other host as part of its core function. There is no general-purpose HTTP client, no plugin download mechanism, and no way for the agent to instruct the CLI to call an arbitrary URL. The only network calls the CLI makes are to the configured backend endpoint.
+By default, interactive and one-shot CLI sessions connect to a local monofoundry daemon over loopback. The daemon is the local runtime host: it owns the Core stream, executes local tools, and relays events back to the CLI client. It binds to `127.0.0.1`, requires a bearer token from `~/.monofoundry/daemon.json`, and is not exposed as a remote service.
+
+The CLI **never** makes HTTP requests to arbitrary hosts as part of its core function. There is no general-purpose HTTP client, no plugin download mechanism, and no way for the agent to instruct the CLI to call an arbitrary URL. The only network calls the CLI makes are to the configured backend endpoint, loopback daemon endpoint, update endpoints, and OAuth callback endpoint listed below.
 
 ### Complete List of Network Endpoints
 
@@ -65,6 +67,7 @@ The CLI **never** makes HTTP requests to any other host as part of its core func
 | `raw.githubusercontent.com` | HTTPS | Only when an update is installed | Download the install script |
 | `app.monoai.co` | HTTPS | When deep-links are opened (in the user's browser, not from the CLI process) | Studio project/work-item/conversation links |
 | OAuth provider (Google/Microsoft) | HTTPS | Only during `auth login` (opened in the user's browser) | SSO sign-in |
+| `127.0.0.1` (localhost) | HTTP/SSE/WebSocket | Default daemon-client mode | Local daemon transport for interactive, one-shot, and IDE bridge sessions |
 | `127.0.0.1` (localhost) | HTTP | Only during `auth login` | Ephemeral callback server to capture the OAuth token |
 
 No other outbound network connections are made by the CLI itself.
@@ -110,7 +113,7 @@ Config writes are atomic: content is written to a temp file, permissions are set
 
 ### Server-Side Orchestration
 
-The backend decides which tools to run. The CLI sends the user's message (plus workspace context) to the backend, receives a stream of SSE events, and when the backend sends an `ide_automation_command` event naming a tool, the CLI executes it locally and posts the result back. The CLI **never** chooses tools itself - it is a passive executor of the backend's decisions.
+The backend decides which tools to run. In direct mode, the CLI sends the user's message (plus workspace context) to the backend, receives a stream of SSE events, and when the backend sends an `ide_automation_command` event naming a tool, the CLI executes it locally and posts the result back. In default daemon mode, the local daemon owns that same Core stream and tool round-trip, while the foreground CLI attaches to the daemon over loopback. The CLI and daemon **never** choose tools themselves - they are passive executors of the backend's decisions.
 
 This means the agent's intelligence, including decisions about which files to read, which commands to run, and which edits to make, all happen server-side under the backend's access control and safety policies.
 
@@ -249,7 +252,7 @@ The CLI does not collect, transmit, or store analytics, usage telemetry, or trac
 - Tool command results (output of local tool execution).
 - File uploads (binary attachments the user explicitly attaches).
 
-No background processes, watchers, or daemons run between turns. The CLI is idle unless the user is actively interacting with it.
+In daemon-default mode, a local daemon may continue running between turns so future CLI/IDE sessions can attach quickly and share one local runtime. It listens only on loopback, requires a bearer token, writes discovery to `~/.monofoundry/daemon.json`, and writes logs to `~/.monofoundry/logs/daemon.log`. Use `monofoundry daemon stop` to stop it, or `--direct` / `--no-daemon` to bypass it for a session.
 
 ---
 
@@ -278,7 +281,7 @@ The CLI operates with the permissions of the running user. For additional protec
 | **Sandboxed execution** | Run the CLI inside a container, VM, or restricted user account | Limit filesystem and process access to a contained environment |
 | **Dedicated workspace** | Point `--cwd` at a specific project directory, not your home directory | Limit the agent's filesystem access to the project scope |
 | **Passphrase-based encryption** | Set `MONOFOUNDRY_PASSPHRASE` in the environment | Make credentials non-decryptable without the passphrase, even on the originating machine |
-| **Network egress filtering** | Allowlist `core.monoai.co` (and `api.github.com` for updates) in your firewall | Enforce the single-backend network model at the network level |
+| **Network egress filtering** | Allowlist `core.monoai.co` (and GitHub endpoints for updates) plus loopback daemon traffic in your firewall | Enforce the expected network model at the network level |
 | **MCP server review** | Audit any MCP server configs before adding them | MCP servers run with your permissions and can make their own network calls |
 
 ---

@@ -7,6 +7,7 @@ Welcome to the monō foundry documentation. monō foundry is a thin-client CLI f
 | Guide | Description |
 |-------|-------------|
 | [Commands & Shortcuts](commands.md) | Full reference for CLI flags, slash commands, keyboard shortcuts, and shell mode. |
+| [Daemon Local Runtime](daemon.md) | Default daemon behaviour, lifecycle commands, troubleshooting, update handling, and direct-mode recovery. |
 | [MCP Servers](mcp.md) | Configure local MCP (Model Context Protocol) servers to extend the agent with custom tools. |
 | [Skills](skills.md) | Create and use reusable skill instruction sets (SKILL.md files) to guide the agent on specific tasks. |
 | [Subagents](subagents.md) | How the backend spawns parallel child conversations, visual attribution, tool execution, and prompting suggestions. |
@@ -19,6 +20,8 @@ monō foundry uses `~/.monofoundry/` as its primary configuration directory. Cre
 
 | Config | Primary location | Fallbacks |
 |--------|-----------------|-----------|
+| Daemon discovery | `~/.monofoundry/daemon.json` | None |
+| Daemon logs | `~/.monofoundry/logs/daemon.log` | None |
 | MCP servers | `~/.monofoundry/mcp.json` | `~/.mcp.json`, `~/.claude/mcp.json`, `~/.vscode/settings.json`, `~/.gemini/antigravity/mcp_config.json` |
 | Skills | `~/.monofoundry/skills/` | `~/.claude/skills/`, `~/.agents/skills/`, `~/.cursor/skills/`, `~/.codex/skills/`, `~/.gemini/config/skills/` |
 | Agent instructions | `~/.monofoundry/MONOFOUNDRY.md` | `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.agents/AGENTS.md`, `~/.gemini/GEMINI.md`, `~/.cursorrules` |

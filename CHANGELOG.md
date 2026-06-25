@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.15.0 — 2026-06-25
+
+- Daemon runtime is now the default for interactive sessions, with auto-start, idle shutdown, and graceful fallback to direct mode.
+- `monofoundry daemon` and `monofoundry doctor` commands for daemon lifecycle and diagnostics.
+- Platform-wide conversation discovery and resume via `/conversations studio` and `/resume <id>`.
+- Status bar shows session cost by default; Meta+T toggles to token count.
+- Elapsed-time timer on the spinner line during generation.
+- Stale daemon detection and auto-restart, and reconnection resilience on daemon restart.
+- Per-conversation model persistence and restore on resume.
+- Conversation usage summary and diff previews now shown on resume.
+- Two-row slash-command autocomplete for better visibility.
+- Fixed multi-row history navigation, noisy prompt history, and terminal status row wrapping.
+- Hardened write tools against formatter and line-ending drift.
+- Bug fixes and internal improvements.
+
 ## v0.14.0 — 2026-06-23
 
 - Improved network resilience

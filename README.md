@@ -1,10 +1,10 @@
 # monō-foundry
 
-A thin-client CLI for the [monō ai](https://app.monoai.co) coding agent. The agent loop, model intelligence, and projects/workspaces all run server-side; this CLI streams responses and executes tool commands in your local context.
+A thin-client CLI for the [monō ai](https://app.monoai.co) coding agent. The agent loop, model intelligence, and projects/workspaces all run server-side; the local daemon hosts the default CLI runtime, streams responses, and executes tool commands in your local context.
 
 Skills, agent instructions, and local context will all be automatically detected. This tool by default will assume all the permissions of the running user; use `/approve` if you want to approve steps, and sandbox it if you want additional protection.
 
-<img src="demo.gif" alt="monō foundry demo — project linking, workitem creation, agent implementation, and test verification" width="600" />
+<img src="demo.gif" alt="monō foundry demo - project linking, workitem creation, agent implementation, and test verification" width="600" />
 
 ## Prerequisites
 
@@ -57,12 +57,13 @@ monofoundry "fix the failing test in src/render"   # one-shot
 
 ### Options
 
-| Flag                 | Description                                             |
-| -------------------- | ------------------------------------------------------- |
-| `--cwd <path>`       | Set the workspace root (default: current directory)     |
-| `--model <model_id>` | Use a specific model for this session                   |
-| `--approve`          | Require approval before applying code edits (REPL only) |
-| `--help`, `-h`       | Show usage                                              |
+| Flag                      | Description                                             |
+| ------------------------- | ------------------------------------------------------- |
+| `--cwd <path>`            | Set the workspace root (default: current directory)     |
+| `--model <model_id>`      | Use a specific model for this session                   |
+| `--approve`               | Require approval before applying code edits (REPL only) |
+| `--direct`, `--no-daemon` | Run without the daemon for recovery/debugging           |
+| `--help`, `-h`            | Show usage                                              |
 
 `monofoundry auth login` additionally accepts `--endpoint <url>` to override the API endpoint when signing in.
 
@@ -101,9 +102,25 @@ Inside the interactive REPL, slash commands are available:
 
 Conversation history is stored locally under `~/.monofoundry/projects/<slug>/conversations/`.
 
+## Daemon local runtime
+
+Interactive and one-shot sessions use the local daemon by default. The daemon auto-starts when needed, stores discovery at `~/.monofoundry/daemon.json`, and writes logs to `~/.monofoundry/logs/daemon.log`.
+
+Useful diagnostics:
+
+```bash
+monofoundry daemon status
+monofoundry daemon logs --lines 100
+monofoundry daemon restart
+monofoundry doctor
+```
+
+Use `--direct`, `--no-daemon`, or `MONOFOUNDRY_NO_DAEMON=1` to bypass the daemon for recovery.
+
 ## Docs
 
 - [Documentation Index](docs/index.md) - high-level index of all documentation
+- [Daemon Local Runtime](docs/daemon.md) - default daemon behaviour, lifecycle commands, troubleshooting, and direct-mode recovery
 - [Commands & Shortcuts](docs/commands.md) - full reference for slash commands, keyboard shortcuts, and shell mode
 - [MCP Servers](docs/mcp.md) - configure local MCP servers to extend the agent with custom tools
 - [Skills](docs/skills.md) - create and use reusable skill instruction sets
