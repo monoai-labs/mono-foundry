@@ -208,12 +208,12 @@ After generation, edit the `## Architecture` and `## Conventions` sections to de
 
 ### Conversation
 
-| Command          | Aliases  | Description                                                                                                                          |
-| ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `/resume [id]`   | -        | Resume the most recent conversation, or a specific one by ID                                                                         |
-| `/conversations` | -        | Browse and resume local and project-linked conversations                                                                             |
-| `/history`       | -        | Show recent remote conversation history (up to 10)                                                                                   |
-| `/tokens`        | `/costs` | Display token usage and estimated costs for session, conversation, project, and overall - with a per-model breakdown under each tier |
+| Command                             | Aliases  | Description                                                                                                                                  |
+| ----------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/resume [id]`                      | -        | Resume the most recent conversation, or a specific one by ID                                                                                 |
+| `/conversations [studio [url\|id]]` | -        | Browse and resume local and project-linked conversations; `studio` to search all Studio conversations, `studio <url\|id>` to resume directly |
+| `/history`                          | -        | Show recent remote conversation history (up to 10)                                                                                           |
+| `/tokens`                           | `/costs` | Display token usage and estimated costs for session, conversation, project, and overall - with a per-model breakdown under each tier         |
 
 #### `/resume [id]`
 
@@ -239,6 +239,29 @@ Opens a filterable picker listing all local conversations for the current projec
   Fix the flaky render test    6a1c...  13/06/2026 09:14
   Refactor auth module         6a1b...  12/06/2026 17:45  · linked
   Cancel
+```
+
+#### `/conversations studio [url|id]`
+
+The `studio` sub-command searches all conversations across your organisation on Studio (not just local or project-linked ones).
+
+- `/conversations studio` — Opens a paginated, filterable picker of all Studio conversations. Use ◂ Previous / ▸ Next to cycle through pages.
+- `/conversations studio <url|id>` — Resumes a specific Studio conversation directly. Accepts either a raw conversation ID or a full Studio URL (the ID is extracted from the last path segment).
+
+```
+> /conversations studio
+# opens paginated picker:
+  Studio Conversations (page 1/5, 97 total)
+  Fix the flaky render test    6a1c...  13/06/2026 09:14
+  Refactor auth module         6a1b...  12/06/2026 17:45
+  ▸ Next page
+  Cancel
+
+> /conversations studio https://app.monoai.co/conversations/6a1cca6ed38548818b7c07a6
+# resumes that conversation directly
+
+> /conversations studio 6a1cca6ed38548818b7c07a6
+# same — raw ID also works
 ```
 
 #### `/history`
@@ -492,10 +515,10 @@ Organisation: default  - model cache cleared, new conversation
 
 ### Project
 
-| Command                                             | Description                                                     |
-| --------------------------------------------------- | --------------------------------------------------------------- |
-| `/project [id\|key\|name\|clear]                `   | Select (or clear) the workspace project for this session        |
-| `/workitem [create <title>\|id\|key\|title\|clear]` | Select, create, or clear a work item within the current project |
+| Command                                                                            | Description                                                                |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `/project [id\|key\|name\|clear]                `                                  | Select (or clear) the workspace project for this session                   |
+| `/workitem [create <title>\|implement <tag\|id\|url>\|id\|key\|url\|title\|clear]` | Select, create, implement, or clear a work item within the current project |
 
 #### `/project [id|key|name|clear]`
 
@@ -528,7 +551,8 @@ Requires a project to be selected first.
 **Sub-commands:**
 
 - `create <title>` - Create a new work item in the current project. The title can be supplied inline (optionally quoted with `"` or `'`) or entered at a prompt if omitted. You're then prompted for an optional description (press Enter to skip). The new work item is auto-selected on success so you can start working immediately.
-- `<id|key|title>` - Select an existing work item directly.
+- `implement <tag|id|url>` - Retrieve the work item, link this conversation to it, and start implementing it in a single step. Accepts a work item key (e.g. `MONO-92`), a raw ID, or a full Studio URL (the key/ID is extracted from the last path segment).
+- `<id|key|url|title>` - Select an existing work item directly. Accepts a raw ID, key, title, or a full Studio URL (the key/ID is extracted from the last path segment).
 - `clear` / `none` / `reset` - Remove the current work item selection.
 - No argument - Open a filterable picker of all open work items.
 
@@ -542,6 +566,15 @@ Requires a project to be selected first.
 
 > /workitem MONO-92
 # selects by key
+
+> /workitem https://app.monoai.co/workspace/work-items/MONO-92
+# same — Studio URL also works (key extracted from path)
+
+> /workitem implement MONO-466
+# retrieves the work item, links this conversation, and starts implementing
+
+> /workitem implement https://app.monoai.co/workspace/work-items/MONO-466
+# same — Studio URL also works
 
 > /workitem create "Add dark mode toggle"
 Enter an optional description (or press Enter to skip):

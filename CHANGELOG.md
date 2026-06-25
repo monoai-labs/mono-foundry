@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.15.1 — 2026-06-25
+
+- Dropped files are now copied to a stable location at drop time, preventing macOS from deleting screenshots before upload; original filenames are preserved.
+- Studio URLs can be pasted directly into `/conversations studio` and `/workitem` commands.
+- PageUp/PageDown navigation added to the picker.
+- Fixed picker jumping when scroll indicators appear or disappear.
+- Bug fixes and internal improvements.
+
 ## v0.15.0 — 2026-06-25
 
 - Daemon runtime is now the default for interactive sessions, with auto-start, idle shutdown, and graceful fallback to direct mode.
