@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.15.2 — 2026-06-26
+
+- Background sub-agent activity is now clearly attributed and separated from the parent session, with live aggregate status in the spinner and tool receipts that persist across resume.
+- File moves now support explicit overwrite and cross-device fallback.
+- Fixed dropped final stream events when a response ends without a trailing delimiter.
+- Fixed staged changes being omitted from diff output by default.
+- Terminal command timeouts now return partial output instead of discarding it.
+- Tab completion into a directory now immediately refreshes matches with its contents.
+- Deleting a non-existent file now reports a failure instead of silently succeeding.
+- Daemon turns now halt immediately on server-side error events.
+- Bug fixes and internal improvements.
+
 ## v0.15.1 — 2026-06-25
 
 - Dropped files are now copied to a stable location at drop time, preventing macOS from deleting screenshots before upload; original filenames are preserved.
