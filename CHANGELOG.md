@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.15.3 — 2026-06-26
+
+- Organisation, model, and utility selections are now isolated per session, preventing concurrent sessions from overwriting each other's persisted defaults.
+- Conversations now remember and restore their organisation, model, and utility context on resume.
+- Projects now persist and automatically apply their preferred organisation, model, and utility on selection.
+- Model catalogue cache is now per-organisation, avoiding unnecessary re-fetches when switching back to a previously visited organisation.
+- Bug fixes and internal improvements.
+
 ## v0.15.2 — 2026-06-26
 
 - Background sub-agent activity is now clearly attributed and separated from the parent session, with live aggregate status in the spinner and tool receipts that persist across resume.
