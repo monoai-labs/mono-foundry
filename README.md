@@ -76,7 +76,6 @@ Inside the interactive REPL, slash commands are available:
 | `/new`           | Start a new conversation                      |
 | `/resume`        | Resume the most recent conversation           |
 | `/conversations` | List all saved conversations for resumption   |
-| `/history`       | Show the current conversation history         |
 | `/model`         | Show or change the LLM being used             |
 | `/clarify <msg>` | Steer the agent mid-turn                      |
 | `/tokens`        | Display token usage stats                     |

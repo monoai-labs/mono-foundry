@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.15.4 — 2026-06-26
+
+- Tilde (~) in file paths now expands to the home directory across all file tools.
+- Remote subagents now display correct labels and completion status instead of generic placeholder names.
+- The elapsed-time timer no longer shows a stale duration after slash commands.
+- Diagnostics, managed terminal, and skill listing output now include the fields agents expect.
+- Removed the /history command, subsumed by /conversations studio.
+- Bug fixes and internal improvements.
+
 ## v0.15.3 — 2026-06-26
 
 - Organisation, model, and utility selections are now isolated per session, preventing concurrent sessions from overwriting each other's persisted defaults.

@@ -212,7 +212,6 @@ After generation, edit the `## Architecture` and `## Conventions` sections to de
 | ----------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/resume [id]`                      | -        | Resume the most recent conversation, or a specific one by ID                                                                                 |
 | `/conversations [studio [url\|id]]` | -        | Browse and resume local and project-linked conversations; `studio` to search all Studio conversations, `studio <url\|id>` to resume directly |
-| `/history`                          | -        | Show recent remote conversation history (up to 10)                                                                                           |
 | `/tokens`                           | `/costs` | Display token usage and estimated costs for session, conversation, project, and overall - with a per-model breakdown under each tier         |
 
 #### `/resume [id]`
@@ -262,17 +261,6 @@ The `studio` sub-command searches all conversations across your organisation on 
 
 > /conversations studio 6a1cca6ed38548818b7c07a6
 # same — raw ID also works
-```
-
-#### `/history`
-
-Fetches and displays the 10 most recent conversations from the remote backend.
-
-```
-> /history
-  1. Fix the flaky render test
-  2. Refactor auth module
-  3. Add token usage tracking
 ```
 
 #### `/tokens`
