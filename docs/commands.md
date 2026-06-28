@@ -26,6 +26,7 @@ This document covers every command and keyboard shortcut available in the intera
   - [Multi-line Input](#multi-line-input)
   - [Tab Completion](#tab-completion)
   - [Model Switching](#model-switching)
+  - [Utility Switching](#utility-switching)
   - [Status Bar Toggles](#status-bar-toggles)
 
 ---
@@ -731,6 +732,32 @@ The selected model persists per project directory and takes effect on the next t
     GPT-4o             [standard]  OpenAI
     Cancel
 # select a model → picker closes, buffer restored:
+  ❯ refactor the auth module to use█
+```
+
+---
+
+### Utility Switching
+
+| Shortcut    | Action                                                   |
+| ----------- | -------------------------------------------------------- |
+| `Alt/Opt-U` | Open the utility picker without clearing the input buffer |
+
+#### `Alt/Opt-U` - Switch utility
+
+Opens the utility picker directly from the input line - no need to type `/utility` and submit. The input buffer is preserved: the picker renders in the live region (temporarily hiding the input), and the buffer is restored when the picker closes, whether you select a utility or cancel with `Escape`/`Ctrl-C`.
+
+The selected utility persists per project directory and takes effect on the next turn. If the agent is currently generating, the utility change applies to subsequent turns - the current turn is not interrupted. The shortcut is ignored if another picker is already open.
+
+```
+# typing: "refactor the auth module to use█"
+# Alt/Opt-U → picker opens, buffer hidden:
+  Select utility
+  > Type to filter
+  ▸ monocode        (monocode)
+    research        (research)
+    Cancel
+# select a utility → picker closes, buffer restored:
   ❯ refactor the auth module to use█
 ```
 

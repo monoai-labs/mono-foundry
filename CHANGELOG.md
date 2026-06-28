@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.16.0 — 2026-06-28
+
+- Alt+U shortcut switches utility type mid-input without clearing the buffer.
+- Turn duration now appears in the end-of-turn usage summary.
+- Batch file read receipts list the files accessed, not just a count.
+- Local project storage now resolves git worktrees and subdirectories to the main checkout, keeping conversations and history unified.
+- Fixed input history corruption and lost entries under concurrent sessions.
+- Managed terminal output is now properly bounded by the character cap.
+- Server-side error events are now terminal in direct mode, matching daemon behaviour.
+- Reconnection and approval handling are now consistent across direct and daemon modes.
+- Bug fixes and internal improvements.
+
 ## v0.15.4 — 2026-06-26
 
 - Tilde (~) in file paths now expands to the home directory across all file tools.
