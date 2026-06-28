@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.16.1 — 2026-06-28
+
+- Fixed approval mode in daemon sessions: diff preview now appears before the accept/reject/skip prompt, and rejected/skipped tools show the correct indicators.
+- Fixed styled text wrapping: bold, italic, and inline-code spans no longer break mid-word at the terminal margin.
+- Fixed table rendering for narrow symbols (✗, ✓, ❯) that were incorrectly counted as two columns wide.
+- Spinner now renders in yellow to match the active-turn prompt colour.
+- Bug fixes and internal improvements.
+
 ## v0.16.0 — 2026-06-28
 
 - Alt+U shortcut switches utility type mid-input without clearing the buffer.
