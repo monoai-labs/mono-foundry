@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.16.2 — 2026-06-29
+
+- Text search now consistently shows the requested context lines around matches.
+- File search scope warning now shown on all search paths.
+- Ctrl-C cancellation no longer leaves a spurious "connection ended" message in direct mode.
+- Diagnostics timeout detection fixed across all supported linters and type checkers.
+- Home-relative paths now expanded correctly in daemon mode.
+- Rejected or skipped tools in daemon subagent sessions now render correct approval indicators.
+- CJK characters and emoji no longer misalign the input line when wrapping.
+- Bug fixes and internal improvements.
+
 ## v0.16.1 — 2026-06-28
 
 - Fixed approval mode in daemon sessions: diff preview now appears before the accept/reject/skip prompt, and rejected/skipped tools show the correct indicators.
