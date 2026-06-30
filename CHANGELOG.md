@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.17.0 — 2026-06-30
+
+- New plugin system: install, list, enable, disable, remove, and inspect extensions from GitHub releases, URLs, or local directories; plugins can provide or override tools and activate at daemon startup.
+- `lsp enable` and `lsp doctor` commands for setting up and diagnosing language-server support in a workspace.
+- Sign-in now uses a localhost OAuth redirect instead of a manual paste step; the callback page is branded and auto-closes on success.
+- Daemon status shows uptime and loaded plugins; the redundant internal session row is no longer shown.
+- A provisional indicator appears when a clarification is in flight during a long-running tool; slash-command tokens are now highlighted in the input line.
+- Fixed cursor drift when completing file paths with non-ASCII characters, stale file completions lingering after submit, and duplicate input history entries.
+- Fixed duplicate tool receipts and misaligned multiline command summaries in daemon-client mode.
+- Fixed a crash when installing a local plugin from a directory with pnpm symlink farms; daemon restart now clears its own restart-required marker.
+- Bug fixes and internal improvements.
+
 ## v0.16.2 — 2026-06-29
 
 - Text search now consistently shows the requested context lines around matches.
