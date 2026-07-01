@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.18.0 — 2026-07-01
+
+- Syntax highlighting via plugins: plugins can declare languages they highlight, and code blocks and diff previews are styled automatically.
+- `plugin update` command to update all or specific plugins to the latest release, with optional version pinning.
+- `plugin config` command to set, clear, and list per-plugin configuration values with schema validation.
+- Plugins can now register slash commands, spawn child processes, persist configuration, and discover workspace files via newly implemented APIs.
+- Plugins can be installed via bare GitHub URLs in addition to the shorthand syntax.
+- Plugin manifest schema for editor validation; manifest id field removed in favour of auto-derived identifiers.
+- Capability-based language-server discovery: any plugin can declare language-server support; the CLI finds supporting plugins at runtime.
+- Improved plugin install experience: permissions listed per line, interactive enable prompt, and release-tag-accurate version display.
+- Bug fixes and internal improvements.
+
 ## v0.17.0 — 2026-06-30
 
 - New plugin system: install, list, enable, disable, remove, and inspect extensions from GitHub releases, URLs, or local directories; plugins can provide or override tools and activate at daemon startup.

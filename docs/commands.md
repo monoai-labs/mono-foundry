@@ -8,6 +8,7 @@ This document covers every command and keyboard shortcut available in the intera
 
 - [CLI Flags](#cli-flags)
 - [Top-level Daemon Commands](#top-level-daemon-commands)
+- [Top-level Plugin Commands](#top-level-plugin-commands)
 - [Slash Commands](#slash-commands)
   - [Core](#core)
   - [Conversation](#conversation)
@@ -44,6 +45,9 @@ monofoundry auth status         Show current auth status
 monofoundry daemon status       Show daemon status
 monofoundry daemon logs         Show daemon logs
 monofoundry doctor              Run local diagnostics
+monofoundry plugin list         List installed plugins
+monofoundry plugin install <src> Install a plugin
+monofoundry plugin config <id>  Configure a plugin
 ```
 
 | Flag                        | Description                                          |
@@ -79,6 +83,26 @@ Interactive REPL and one-shot runs use the local daemon by default. These top-le
 Use `--direct`, `--no-daemon`, or `MONOFOUNDRY_NO_DAEMON=1` to bypass the daemon for recovery. Use `--daemon-client` and the daemon URL/token flags when you want explicit daemon diagnostics that fail closed instead of falling back to direct mode.
 
 See [Daemon Local Runtime](daemon.md) for the full guide.
+
+---
+
+## Top-level Plugin Commands
+
+Plugin management is performed through the `monofoundry plugin` CLI command. These commands are not available as REPL slash commands — run them from a terminal.
+
+| Command | Description |
+| --- | --- |
+| `monofoundry plugin install <source> [--enable] [--dev]` | Install a plugin from GitHub, URL, or local path |
+| `monofoundry plugin list` | List installed plugins |
+| `monofoundry plugin enable <id>` | Enable a plugin globally |
+| `monofoundry plugin disable <id>` | Disable a plugin globally |
+| `monofoundry plugin remove <id>` | Remove an installed plugin |
+| `monofoundry plugin info <id>` | Show plugin details |
+| `monofoundry plugin config <id> <key> <value>` | Set a plugin config value |
+| `monofoundry plugin config <id> clear [key]` | Clear plugin config (all or single key) |
+| `monofoundry plugin config <id> list` | List plugin config values |
+
+See [Plugins](plugins.md) for the full guide on installation sources, permissions, configuration, and first-party plugins.
 
 ---
 
