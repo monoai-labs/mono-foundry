@@ -20,6 +20,7 @@ Plugins extend monō foundry with additional capabilities - language server supp
 - [Storage and Configuration](#storage-and-configuration)
 - [Permissions](#permissions)
 - [After a Plugin Change](#after-a-plugin-change)
+- [Contributed Slash Commands](#contributed-slash-commands)
 - [First-Party Plugins](#first-party-plugins)
   - [LSP Plugin](#lsp-plugin)
   - [Highlight Plugin](#highlight-plugin)
@@ -376,6 +377,7 @@ Each plugin declares a non-empty `permissions` array in its manifest. The runtim
 | Permission               | Description                                         |
 | ------------------------ | --------------------------------------------------- |
 | `workspace:read`         | Read files in the workspace.                        |
+| `workspace:read:external` | Read files outside the workspace.                   |
 | `workspace:write`        | Write or modify files in the workspace.             |
 | `process:spawn`          | Spawn child processes.                              |
 | `network:localhost`      | Make network requests to localhost only.            |
@@ -401,6 +403,29 @@ When you install, enable, disable, or remove a plugin, the CLI determines whethe
 - **Client-only plugins** (highlighters) - No daemon restart needed. You'll see a notice to restart any running sessions.
 
 This distinction is automatic - the CLI inspects the plugin's `contributes` declarations to determine which process the plugin runs in.
+
+---
+
+## Contributed Slash Commands
+
+Plugins can contribute slash commands to the interactive REPL. When a plugin declares `contributes.commands` in its manifest and registers commands via `ctx.commands.register()` during activation, those commands automatically appear in:
+
+- **`/help` output** — listed with a `(plugin)` prefix in the description
+- **Tab completion** — available alongside built-in commands when typing `/`
+- **Dispatch** — handled locally when the user types the command
+
+### Collision Handling
+
+Built-in commands always take precedence. If a plugin contributes a command with the same name as a built-in (e.g. `/help`), the plugin command is skipped and a warning is displayed at startup.
+
+### Error Isolation
+
+If a plugin command handler throws an error, the error is caught and displayed to the user. It does not crash the REPL or interrupt the current session.
+
+### Lifecycle
+
+Plugin commands are registered at session startup when enabled plugins are loaded. Disabling or removing a plugin requires restarting the session (or daemon) for the contributed commands to disappear — there is no live unload.
+
 
 ---
 

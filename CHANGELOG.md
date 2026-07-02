@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.18.1 — 2026-07-02
+
+- Isolated plugin host: plugins run in a separate process with managed activation, health monitoring, and bounded restarts; legacy in-process execution removed.
+- Plugin-contributed slash commands now appear in `/help`, tab completion, and dispatch; built-ins take precedence on conflicts.
+- `plugin reinstall` command to refresh all or specific installed plugins through the hardened installer path.
+- Plugin listings and info show runtime targets (client, daemon, or both) and active override conflicts.
+- Plugin tool overrides resolve deterministically by priority; unregistering promotes the next best override.
+- Plugin workspace edits require explicit write permissions, show diff previews, and respect the per-turn approval gate.
+- Hardened plugin security: HTTPS-only downloads with size and timeout limits, archive entry validation, package integrity verification before loading, stricter manifest validation, workspace read containment, symlink escape prevention, and constrained process spawns.
+- Plugin highlighter failures contained with output caps and fallback to built-in rendering.
+- Fixed unrecognised `daemon` arguments producing a confusing auth error instead of a clear message.
+- Bug fixes and internal improvements.
+
 ## v0.18.0 — 2026-07-01
 
 - Syntax highlighting via plugins: plugins can declare languages they highlight, and code blocks and diff previews are styled automatically.
