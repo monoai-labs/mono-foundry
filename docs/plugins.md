@@ -236,21 +236,21 @@ monofoundry plugin config my-plugin name hello         # stored as string "hello
 
 The validator supports the following JSON Schema keywords:
 
-| Keyword              | Applies to  | Description                                                                  |
-| -------------------- | ----------- | ---------------------------------------------------------------------------- |
-| `type`               | any         | `string`, `number`, `integer`, `boolean`, `null`, `object`, `array` (or an array of allowed types) |
-| `enum`               | any         | Value must be one of the listed constants.                                   |
-| `const`              | any         | Value must equal the constant.                                               |
-| `minimum`            | number      | Inclusive lower bound.                                                       |
-| `maximum`            | number      | Inclusive upper bound.                                                       |
-| `exclusiveMinimum`   | number      | Exclusive lower bound.                                                       |
-| `exclusiveMaximum`   | number      | Exclusive upper bound.                                                       |
-| `minLength`          | string      | Minimum string length.                                                       |
-| `maxLength`          | string      | Maximum string length.                                                       |
-| `pattern`            | string      | Regex the string must match.                                                 |
-| `items`              | array       | Schema that each array element must satisfy.                                |
-| `properties`         | object      | Per-property schemas.                                                        |
-| `required`           | object      | Array of property names that must be present.                                |
+| Keyword            | Applies to | Description                                                                                        |
+| ------------------ | ---------- | -------------------------------------------------------------------------------------------------- |
+| `type`             | any        | `string`, `number`, `integer`, `boolean`, `null`, `object`, `array` (or an array of allowed types) |
+| `enum`             | any        | Value must be one of the listed constants.                                                         |
+| `const`            | any        | Value must equal the constant.                                                                     |
+| `minimum`          | number     | Inclusive lower bound.                                                                             |
+| `maximum`          | number     | Inclusive upper bound.                                                                             |
+| `exclusiveMinimum` | number     | Exclusive lower bound.                                                                             |
+| `exclusiveMaximum` | number     | Exclusive upper bound.                                                                             |
+| `minLength`        | string     | Minimum string length.                                                                             |
+| `maxLength`        | string     | Maximum string length.                                                                             |
+| `pattern`          | string     | Regex the string must match.                                                                       |
+| `items`            | array      | Schema that each array element must satisfy.                                                       |
+| `properties`       | object     | Per-property schemas.                                                                              |
+| `required`         | object     | Array of property names that must be present.                                                      |
 
 If the plugin has no config schema declared, values are stored without validation.
 
@@ -374,22 +374,23 @@ Per-project plugin config is stored at `~/.monofoundry/projects/<slug>/plugins.j
 
 Each plugin declares a non-empty `permissions` array in its manifest. The runtime gates every capability behind the corresponding permission - if a plugin attempts to use a capability it hasn't declared, it throws an error.
 
-| Permission               | Description                                         |
-| ------------------------ | --------------------------------------------------- |
-| `workspace:read`         | Read files in the workspace.                        |
+| Permission                | Description                                         |
+| ------------------------- | --------------------------------------------------- |
+| `workspace:read`          | Read files in the workspace.                        |
 | `workspace:read:external` | Read files outside the workspace.                   |
-| `workspace:write`        | Write or modify files in the workspace.             |
-| `process:spawn`          | Spawn child processes.                              |
-| `network:localhost`      | Make network requests to localhost only.            |
-| `network:external`       | Make network requests to external hosts.            |
-| `config:read`            | Read plugin configuration.                          |
-| `config:write`           | Write plugin configuration.                         |
-| `storage:read`           | Read from plugin persistent storage.                |
-| `storage:write`          | Write to plugin persistent storage.                 |
-| `tool:provide:<name>`    | Provide a new tool with the given name.             |
-| `tool:override:<name>`   | Override a built-in tool with the given name.       |
-| `command:provide:<name>` | Provide a slash command with the given name.        |
-| `highlighter:provide`    | Provide syntax highlighting for declared languages. |
+| `workspace:write`         | Write or modify files in the workspace.             |
+| `process:spawn`           | Spawn child processes.                              |
+| `network:localhost`       | Make network requests to localhost only.            |
+| `network:external`        | Make network requests to external hosts.            |
+| `config:read`             | Read plugin configuration.                          |
+| `config:write`            | Write plugin configuration.                         |
+| `storage:read`            | Read from plugin persistent storage.                |
+| `storage:write`           | Write to plugin persistent storage.                 |
+| `tool:provide:<name>`     | Provide a new tool with the given name.             |
+| `tool:override:<name>`    | Override a built-in tool with the given name.       |
+| `command:provide:<name>`  | Provide a slash command with the given name.        |
+| `highlighter:provide`     | Provide syntax highlighting for declared languages. |
+| `theme:provide`           | Provide theme(s) accessible via `/theme`.           |
 
 The install command displays the full permissions list before enabling, so you can review what a plugin can do.
 
@@ -425,7 +426,6 @@ If a plugin command handler throws an error, the error is caught and displayed t
 ### Lifecycle
 
 Plugin commands are registered at session startup when enabled plugins are loaded. Disabling or removing a plugin requires restarting the session (or daemon) for the contributed commands to disappear — there is no live unload.
-
 
 ---
 
@@ -505,6 +505,20 @@ On activation, the plugin spawns an LSP server. Depending on the language, any d
 
 ---
 
+### Theme Plugin
+
+**Repository:** [monoai-labs/mono-foundry-theme-plugin](https://github.com/monoai-labs/mono-foundry-theme-plugin)
+
+The theme plugin provides additional pre-defined light and dark themes that can be accessed via `/theme`.
+
+#### Install
+
+```bash
+monofoundry plugin install github:monoai-labs/mono-foundry-theme-plugin
+```
+
+---
+
 ### Highlight Plugin
 
 **Repository:** [monoai-labs/mono-foundry-highlight-plugin](https://github.com/monoai-labs/mono-foundry-highlight-plugin)
@@ -516,7 +530,7 @@ The highlight plugin wraps [git-delta](https://github.com/dandavison/delta) as a
 - **Code blocks** - Syntax highlighting for all languages, using delta's syntax highlighting with no diff tinting. The renderer adds the indentation gutter; the plugin handles colour.
 - **Diffs** - Full unified-diff highlighting with delta's default tint and syntax colouring, including file metadata headers, hunk headers, and added/removed/context lines.
 
-The plugin registers a catch-all (`*`) highlighter that applies to every language. If another highlighter plugin is registered for a specific language (e.g. a dedicated TypeScript highlighter), that plugin takes precedence.
+The plugin registers a catch-all (`*`) highlighter that applies to every language. If another highlighter plugin is registered for a specific language (e.g. a dedicated TypeScript highlighter), that plugin takes precedence. If both a theme and a highlighter plugin are installed, the highlighter plugin takes precedence.
 
 #### Install
 
@@ -533,4 +547,3 @@ The plugin ships with sensible defaults (Monokai Extended theme, dark mode, word
 ---
 
 © monō ai Australia Pty Ltd. All rights reserved.
-

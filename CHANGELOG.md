@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.19.0 — 2026-07-03
+
+- Token-based theming system with `/theme` command for switching, previewing, and persisting colour schemes; two bundled themes (dark and light) as editable JSON.
+- Theme selection offered during first-run onboarding and applied in one-shot mode.
+- Plugins can now contribute custom themes via their manifest with a dedicated permission gate.
+- Plugin enable, disable, install, reinstall, and update now default to global scope; `--project` flag opts into project-scoped behaviour.
+- Plugin removal now fully cleans up config entries and storage directories.
+- Diff previews now render with syntax highlighting on the client side in daemon mode and with colour on conversation replay.
+- All auth flows now show a green success message on completion.
+- Fixed `apply_diff` prepending content instead of replacing when editing existing files with empty old text.
+- Prevented temporary-directory working directories from creating orphaned project storage folders.
+- Bug fixes and internal improvements.
+
 ## v0.18.1 — 2026-07-02
 
 - Isolated plugin host: plugins run in a separate process with managed activation, health monitoring, and bounded restarts; legacy in-process execution removed.

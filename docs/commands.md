@@ -13,6 +13,7 @@ This document covers every command and keyboard shortcut available in the intera
   - [Core](#core)
   - [Conversation](#conversation)
   - [Session](#session)
+    - [`/theme`](#theme-nameReset)
   - [Files & Attachments](#files--attachments)
   - [Auth](#auth)
   - [Organisation](#organisation)
@@ -318,6 +319,7 @@ Model rows are only shown when usage spans more than one model in a tier. They a
 | `/approve`            | -         | Toggle approval mode for file edits                              |
 | `/clarify <msg>`      | -         | Steer the agent mid-turn                                         |
 | `/nosave [msg\|/cmd]` | -         | Run a turn or command without saving to the backend              |
+| `/theme [name\|reset]` | -        | View available themes, set the active theme, or reset to default |
 
 #### `/model [id|reset]`
 
@@ -384,6 +386,38 @@ Enables nosave mode for the session, then optionally runs a message or another s
 
 > /nosave /commit
 # runs the /commit skill in nosave mode
+```
+
+#### `/theme [name|reset]`
+
+- No argument: shows the current theme and opens a filterable picker of all available themes (bundled and plugin-contributed).
+- With a name: sets that theme immediately (case-insensitive match against available theme names).
+- `reset` or `default`: clears the theme preference and reverts to the built-in default.
+
+The selection is persisted in `~/.monofoundry/config.json` as `defaultTheme` and restored on the next session.
+
+Bundled themes:
+
+| Name    | Appearance | Description                                    |
+| ------- | ---------- | ---------------------------------------------- |
+| `dark`  | dark       | Dark background with the monō brand palette    |
+| `light` | light      | Light background with explicit high-contrast colours |
+
+Plugin-contributed themes appear in the same picker when their plugin is enabled. See [Plugins](plugins.md) for how to contribute a theme from a plugin.
+
+```
+> /theme
+Current theme: dark
+# opens picker:
+  dark (dark)
+  light (light)
+  Cancel
+
+> /theme light
+Theme set to: light
+
+> /theme reset
+Theme reset to default.
 ```
 
 ---
