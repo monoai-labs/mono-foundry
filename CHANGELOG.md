@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.20.0 — 2026-07-04
+
+- Model fallback visibility: status bar, spinner, and exit summary now show the fallback model and a per-model usage breakdown, in both direct and daemon mode.
+- Authoritative backend costs are now used by default and persisted to conversation history for accurate totals on resume.
+- Live cost tracking in the status bar during multi-step turns, with a bounded cost range and real-time cost/tokens toggle.
+- Suppressed meaningless zero-cost rows for models with no pricing; cost toggle only activates when the session has non-zero cost.
+- Code blocks now render with the current theme instead of the default.
+- Exit summary on Ctrl-C/D visually separated from the end-of-turn summary.
+- Bug fixes and internal improvements.
+
 ## v0.19.0 — 2026-07-03
 
 - Token-based theming system with `/theme` command for switching, previewing, and persisting colour schemes; two bundled themes (dark and light) as editable JSON.
