@@ -56,6 +56,7 @@ monofoundry plugin config <id>  Configure a plugin
 | `--version`, `-v`           | Print the version and exit                           |
 | `--cwd <path>`              | Set workspace root (default: current directory)      |
 | `--endpoint <url>`          | Override the API endpoint                            |
+| `--app-url <url>`           | Override Studio web app URL (derived from `--endpoint` if omitted; persisted per-project) |
 | `--model <id>`              | Start the session with a specific model pre-selected |
 | `--project <id\|key\|name>` | Scope the session to a workspace project             |
 | `--resume <id>`             | Resume a previous conversation by ID                 |
@@ -239,6 +240,10 @@ After generation, edit the `## Architecture` and `## Conventions` sections to de
 | `/resume [id]`                      | -        | Resume the most recent conversation, or a specific one by ID                                                                                 |
 | `/conversations [studio [url\|id]]` | -        | Browse and resume local and project-linked conversations; `studio` to search all Studio conversations, `studio <url\|id>` to resume directly |
 | `/tokens`                           | `/costs` | Display token usage and estimated costs for session, conversation, project, and overall - with a per-model breakdown under each tier         |
+| `/star`                             | -        | Star or unstar the current conversation                                                                                                      |
+| `/rename [name]`                    | -        | Rename the current conversation (prompts if no name given)                                                                                   |
+| `/link [key\|url]`                  | -        | Link the conversation to a project (MONO) or work item (MONO-XXX); no arg shows current link                                                 |
+| `/unlink`                           | -        | Unlink the conversation from its project and work item                                                                                       |
 
 #### `/resume [id]`
 
@@ -308,6 +313,62 @@ Token usage
 ```
 
 Model rows are only shown when usage spans more than one model in a tier. They are sorted by total tokens descending.
+
+#### `/star`
+
+Toggles the starred state of the current conversation. Calls the backend API to update the conversation's starred flag and persists the state locally so it survives `/resume`.
+
+```
+> /star
+★ Starred
+
+> /star
+☆ Unstarred
+```
+
+#### `/rename [name]`
+
+Renames the current conversation. When no name is provided, prompts for one interactively. Calls the backend API to update the conversation name and persists it locally.
+
+```
+> /rename Fix the flaky render test
+Renamed to "Fix the flaky render test"
+
+> /rename
+Enter a new name:
+> My new name
+Renamed to "My new name"
+```
+
+#### `/link [key|url]`
+
+Links the current conversation to a project or work item on Studio. Accepts:
+
+- A **project key** (e.g. `MONO`) — links the conversation to that project.
+- A **work item key** (e.g. `MONO-800`) — links to both the work item and its parent project (the project key is derived from the work item key prefix).
+- A **Studio URL** — either a project URL (`/workspace/projects/MONO`) or a work item URL (`/workspace/work-items/MONO-800`); the key is extracted from the last path segment.
+
+Without an argument, shows the current link status.
+
+```
+> /link MONO-800
+Linked to MONO-800 (CLI conversation commands)  https://app.monoai.co/workspace/work-items/MONO-800
+
+> /link MONO
+Linked to monō foundry  https://app.monoai.co/workspace/projects/MONO
+
+> /link
+Linked to MONO-800 — https://app.monoai.co/workspace/work-items/MONO-800
+```
+
+#### `/unlink`
+
+Unlinks the current conversation from its project and work item. Calls the backend API to clear the link and updates the session state.
+
+```
+> /unlink
+Conversation unlinked.
+```
 
 ---
 

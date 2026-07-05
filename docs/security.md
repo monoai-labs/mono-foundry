@@ -54,6 +54,8 @@ monō foundry is a **thin client**. The agent loop, model intelligence, tool sel
 
 All Core agent communication - streaming responses, tool command dispatch, tool result posting, file uploads, model listing, conversation/project/work-item queries - goes to a single backend endpoint. The default is `https://core.monoai.co`, set at login time and stored in the local config. It can be overridden with `--endpoint <url>`.
 
+The Studio web app URL (used for deep-links to projects, work items, and conversations) defaults to `https://app.monoai.co`. It can be overridden with `--app-url <url>`. If `--app-url` is omitted while `--endpoint` is provided, the app URL is derived by swapping the `app`↔`core` subdomain prefix (e.g. `core-staging.monoai.co` → `app-staging.monoai.co`). Derivation only succeeds for hostnames ending in `monoai.co` or `sprnt.ai`; otherwise an error is raised. Both `--endpoint` and `--app-url` are persisted per-project at `~/.monofoundry/projects/<slug>/config.json` so they are remembered on subsequent runs in that project.
+
 By default, interactive and one-shot CLI sessions connect to a local monofoundry daemon over loopback. The daemon is the local runtime host: it owns the Core stream, executes local tools, and relays events back to the CLI client. It binds to `127.0.0.1`, requires a bearer token from `~/.monofoundry/daemon.json`, and is not exposed as a remote service.
 
 The CLI **never** makes HTTP requests to arbitrary hosts as part of its core function. There is no general-purpose HTTP client, no plugin download mechanism, and no way for the agent to instruct the CLI to call an arbitrary URL. The only network calls the CLI makes are to the configured backend endpoint, loopback daemon endpoint, update endpoints, and OAuth callback endpoint listed below.
@@ -65,7 +67,7 @@ The CLI **never** makes HTTP requests to arbitrary hosts as part of its core fun
 | `core.monoai.co` (default, configurable) | HTTPS | Every turn | Agent streaming, tool dispatch, file uploads, auth verification, model/conversation/project queries |
 | `api.github.com` | HTTPS | `/update` command or startup check (24h cache) | Check for new releases |
 | `raw.githubusercontent.com` | HTTPS | Only when an update is installed | Download the install script |
-| `app.monoai.co` | HTTPS | When deep-links are opened (in the user's browser, not from the CLI process) | Studio project/work-item/conversation links |
+| `app.monoai.co` (default, configurable via `--app-url`) | HTTPS | When deep-links are opened (in the user's browser, not from the CLI process) | Studio project/work-item/conversation links |
 | OAuth provider (Google/Microsoft) | HTTPS | Only during `auth login` (opened in the user's browser) | SSO sign-in |
 | `127.0.0.1` (localhost) | HTTP/SSE/WebSocket | Default daemon-client mode | Local daemon transport for interactive, one-shot, and IDE bridge sessions |
 | `127.0.0.1` (localhost) | HTTP | Only during `auth login` | Ephemeral callback server to capture the OAuth token |

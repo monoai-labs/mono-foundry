@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.21.0 — 2026-07-05
+
+- New slash commands for conversation management: `/star`, `/rename`, `/link`, and `/unlink` to star, rename, and link conversations to projects or work items from the REPL.
+- New `--app-url` flag to override the web app URL for deep-links, auto-derived from `--endpoint` when omitted and persisted per-project; also fixes `--endpoint` leaking into the submitted message.
+- Opt/Alt/Shift-Enter now inserts a newline in the quick-action picker's inline input row for multi-line text.
+- Slash commands saved in input history again; token counts now format billions (B) and trillions (T) compactly.
+- Fixed stream errors on turn completion caused by waiting for a terminal signal the backend never sends.
+- Fixed several cost/tokens toggle (Opt-T) issues: no-op during an in-progress first turn, bounded cost range disappearing after a toggle cycle, lost streaming deltas, and a transient cost drop on the first step of a new turn.
+- Fixed per-step token usage being overwritten instead of accumulated, under-counting session totals.
+- /tokens now uses canonical backend cost rather than rate estimates alone; per-model breakdowns for fallback turns attribute tokens proportionally and normalise model identifiers to avoid duplicate rows.
+- Spinner no longer shows during deterministic data fetches (models, projects, conversations).
+- Bug fixes and internal improvements.
+
 ## v0.20.0 — 2026-07-04
 
 - Model fallback visibility: status bar, spinner, and exit summary now show the fallback model and a per-model usage breakdown, in both direct and daemon mode.
