@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.22.0 — 2026-07-07
+
+- Terminal and task-execution tools are now gated behind approval mode; sub-agent tool calls route through the parent session's approval gate.
+- Dismissing an approval prompt with Esc or Ctrl-C now skips the tool instead of accepting it; a second Esc or Ctrl-C is required to clear the input line.
+- File, search, and terminal tools now enforce symlink-aware containment to the workspace root; child processes spawned during a turn have sensitive variables stripped from their environment.
+- Enabling, installing, and running plugin lifecycle hooks now require explicit permission consent; MCP server spawning is gated behind workspace consent.
+- Diff previews are now rendered with the active theme's colours in daemon mode and on conversation replay.
+- Fixed daemon spawn races, crash-mid-turn client hangs, and managed terminal process cleanup.
+- Fixed dollar-sign characters in non-regex replacement text corrupting files.
+- Corrupt conversation history is now quarantined instead of erased; fixed /link and /workitem failing for work items beyond the first 100 results.
+- Fixed Shift-Enter in the Kitty terminal, cursor drift from text-presentation emoji, and concurrent picker prompts overwriting each other.
+- Fixed sub-agent token usage being double-counted in daemon mode.
+- Bug fixes and internal improvements.
+
 ## v0.21.0 — 2026-07-05
 
 - New slash commands for conversation management: `/star`, `/rename`, `/link`, and `/unlink` to star, rename, and link conversations to projects or work items from the REPL.
