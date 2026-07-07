@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.22.1 — 2026-07-07
+
+- Fixed one-shot mode hanging after completion instead of exiting cleanly.
+
 ## v0.22.0 — 2026-07-07
 
 - Terminal and task-execution tools are now gated behind approval mode; sub-agent tool calls route through the parent session's approval gate.
