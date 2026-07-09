@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.23.0 — 2026-07-09
+
+- Automatic retry on rate-limit responses for initial requests, command responses, and sub-agent polling.
+- Aborting a turn now cancels in-flight tools instead of letting them run to completion.
+- `/resume` accepts full Studio URLs in addition to conversation IDs.
+- Plugin installation is now atomic with integrity verification; updated plugins require permission consent before re-enabling; client-side load failures are surfaced.
+- Auth self-healing extended: token reloaded from disk after in-flight refresh, organisation persisted immediately after login, coverage broadened to all API calls.
+- Removed an unconditional five-minute approval timeout that contradicted the documented behaviour.
+- Standardised reset synonyms (`clear`, `default`, `none`, `reset`) across `/model`, `/theme`, `/project`, and `/workitem`.
+- Fixed markdown rendering: quadratic sentence-flush scan, escape byte leaks, link URL nesting, wrapper re-open state leak, and emphasis false positives.
+- Fixed line editor: history index reset on buffer mutations, code-point cursor stepping, CJK/emoji picker width, and stale callback cleanup.
+- Fixed `/star` toggle for conversations without local history and `/update` failure detection.
+- Daemon stability: detached-session idle GC, SIGTERM/SIGHUP cleanup handlers, stale config detection, forceful kill escalation, session-scoped managed terminals, and WebSocket protocol fixes.
+- Plugin host stability: leaked process cleanup, silent late-response dropping, and clean disconnect exit.
+- Fixed version-range matching for caret and tilde operators, cross-platform path separators, and stale fallback model indication in the status bar.
+- Bug fixes and internal improvements.
+
 ## v0.22.1 — 2026-07-07
 
 - Fixed one-shot mode hanging after completion instead of exiting cleanly.

@@ -237,7 +237,7 @@ After generation, edit the `## Architecture` and `## Conventions` sections to de
 
 | Command                             | Aliases  | Description                                                                                                                                  |
 | ----------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/resume [id]`                      | -        | Resume the most recent conversation, or a specific one by ID                                                                                 |
+| `/resume [id\|url]`                  | -        | Resume the most recent conversation, or a specific one by ID or Studio URL                                                                   |
 | `/conversations [studio [url\|id]]` | -        | Browse and resume local and project-linked conversations; `studio` to search all Studio conversations, `studio <url\|id>` to resume directly |
 | `/tokens`                           | `/costs` | Display token usage and estimated costs for session, conversation, project, and overall - with a per-model breakdown under each tier         |
 | `/star`                             | -        | Star or unstar the current conversation                                                                                                      |
@@ -245,9 +245,9 @@ After generation, edit the `## Architecture` and `## Conventions` sections to de
 | `/link [key\|url]`                  | -        | Link the conversation to a project (MONO) or work item (MONO-XXX); no arg shows current link                                                 |
 | `/unlink`                           | -        | Unlink the conversation from its project and work item                                                                                       |
 
-#### `/resume [id]`
+#### `/resume [id|url]`
 
-Without an argument, resumes the most recent conversation for the current working directory. With an ID, resumes that specific conversation.
+Without an argument, resumes the most recent conversation for the current working directory. With an ID or Studio URL, resumes that specific conversation (the conversation ID is extracted from the URL automatically).
 
 ```
 > /resume
@@ -257,6 +257,9 @@ Resumed conversation: "Fix the flaky render test"
 > /resume 6a1cca6ed38548818b7c07a6
 Resumed conversation: "Refactor auth module"
 18 messages
+
+> /resume https://app.monoai.co/conversations/6a1cca6ed38548818b7c07a6
+# same — Studio URL also works (ID extracted from path)
 ```
 
 #### `/conversations`
@@ -386,7 +389,7 @@ Conversation unlinked.
 
 - No argument: shows the current model and opens a filterable picker (sorted by frecency).
 - With a model ID or display name: sets that model immediately (validated against the catalogue).
-- `reset` or `default`: clears the persisted model preference and reverts to the server default.
+- `clear` / `default` / `none` / `reset`: clears the persisted model preference and reverts to the server default.
 
 The selection persists per project directory and is also saved to the global config as a fallback for new projects.
 
@@ -453,7 +456,7 @@ Enables nosave mode for the session, then optionally runs a message or another s
 
 - No argument: shows the current theme and opens a filterable picker of all available themes (bundled and plugin-contributed).
 - With a name: sets that theme immediately (case-insensitive match against available theme names).
-- `reset` or `default`: clears the theme preference and reverts to the built-in default.
+- `clear` / `default` / `none` / `reset`: clears the theme preference and reverts to the built-in default.
 
 The selection is persisted in `~/.monofoundry/config.json` as `defaultTheme` and restored on the next session.
 
@@ -632,7 +635,7 @@ Organisation: default  - model cache cleared, new conversation
 
 - No argument: shows the current selection and opens a filterable picker.
 - With a value: resolves and selects the matching project directly (by ID, key, or name).
-- `clear` / `none` / `reset`: removes the project selection.
+- `clear` / `default` / `none` / `reset`: removes the project selection.
 
 The selection persists in `~/.monofoundry/projects/<slug>/meta.json`.
 
@@ -661,7 +664,7 @@ Requires a project to be selected first.
 - `create <title>` - Create a new work item in the current project. The title can be supplied inline (optionally quoted with `"` or `'`) or entered at a prompt if omitted. You're then prompted for an optional description (press Enter to skip). The new work item is auto-selected on success so you can start working immediately.
 - `implement <tag|id|url>` - Retrieve the work item, link this conversation to it, and start implementing it in a single step. Accepts a work item key (e.g. `MONO-92`), a raw ID, or a full Studio URL (the key/ID is extracted from the last path segment).
 - `<id|key|url|title>` - Select an existing work item directly. Accepts a raw ID, key, title, or a full Studio URL (the key/ID is extracted from the last path segment).
-- `clear` / `none` / `reset` - Remove the current work item selection.
+- `clear` / `default` / `none` / `reset` - Remove the current work item selection.
 - No argument - Open a filterable picker of all open work items.
 
 ```
