@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.24.0 — 2026-07-13
+
+- More reliable sessions, reconnections, replay, and background work.
+- Clearer usage and cost reporting, including activity from background work.
+- More dependable plugin validation, lifecycle handling, and recovery.
+- Improved search, file operations, interactive input, Unicode cursor movement, paste handling, and terminal rendering.
+- More reliable request pacing and retry handling under service limits.
+- Fixed authentication, organisation selection, session resumption, stale state, and one-shot completion issues.
+- Fixed search-and-replace, file-operation, plugin, updater, and credential-handling edge cases.
+- Bug fixes and internal improvements.
+
 ## v0.23.0 — 2026-07-09
 
 - Automatic retry on rate-limit responses for initial requests, command responses, and sub-agent polling.

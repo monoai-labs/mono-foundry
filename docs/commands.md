@@ -887,34 +887,106 @@ The selected utility persists per project directory and takes effect on the next
 
 ### Status Bar Toggles
 
+The persistent status bar sits below the input line and survives transient notices and spinner lines. It is split into a left zone, an empty centre, and a right zone; within each zone higher-priority segments are placed closer to the centre.
+
+**Left zone** (left-to-right):
+
+| Segment | Source | Shown when |
+| ------- | ------ | ---------- |
+| Model | Active model display name | Always |
+| Utility | Selected utility display name | Only when a utility is explicitly selected |
+| Org | Active organisation name or ID | Once the org is known |
+
+**Right zone** (left-to-right):
+
+| Segment | Source | Shown when |
+| ------- | ------ | ---------- |
+| Tokens / cost | Cumulative session usage, or live turn usage/cost while a turn is running | Once any usage has accrued |
+| Approval | `approval: on` | When `/approve` or `--approve` is active |
+| No-save | `no-save` | When `/nosave` mode is active |
+| Studio link | Conversation, work item, or project URL | When the linked item exists |
+| Project | `⊙ project · workitem` | When a project is selected |
+
 | Shortcut    | Action                                                                    |
 | ----------- | ------------------------------------------------------------------------- |
-| `Alt/Opt-L` | Toggle the status-bar link between conversation, project, and workitem    |
-| `Alt/Opt-T` | Toggle the status-bar tokens segment between session cost and token count |
+| `Alt/Opt-L` | Cycle the status-bar Studio link through conversation, work item, project |
+| `Alt/Opt-T` | Toggle the tokens segment between session cost and total token count      |
 
-#### `Alt/Opt-L` - Toggle URL
+#### `Alt/Opt-L` - Cycle Studio link
 
-Switches the URL segment in the status bar between showing the conversation URL, the project URL, or the workitem URL that the conversation is linked to. Nothing is shown if the conversation isn't yet linked to the server. No project or workitem URL will be shown if a project isn't selected or the conversation isn't linked to a workitem.
+Cycles the Studio URL segment through **conversation → work item → project → conversation**, skipping any mode that is not currently available. The default mode is `conversation` and the choice is per-session; it does not persist across restarts.
 
-The toggle preference is per-session and does not persist across restarts.
+- **Conversation** — shown when a conversation is active.
+- **Work item** — shown when the conversation is linked to a work item.
+- **Project** — shown when a project is selected.
 
-```
-# status bar shows:  $0.0124
-# Alt/Opt-T → switches to:  12.4k tokens
-# Alt/Opt-T → switches back to:  $0.0124
-```
+If none of the three are available the segment is hidden.
 
 #### `Alt/Opt-T` - Toggle tokens / cost display
 
-Switches the tokens segment in the status bar between showing the **session cost** (e.g. `$0.0124`) and the **raw token count** (e.g. `12.4k tokens`). The default is cost. When pricing data is unavailable (no cached model catalogue or no per-model pricing breakdown), the segment falls back to the token count regardless of the toggle state.
+Switches the tokens/cost segment between **cost mode** (default) and **tokens mode**. The exact formats are:
 
-The toggle preference is per-session and does not persist across restarts.
+- Cost mode: `$US 0.0124`
+- Tokens mode: `1.5k tok`
+
+`Alt/Opt-T` is a no-op when there is no non-zero cost to display. This happens for org/free models, when no pricing data is cached, or before any billable usage has accrued — in those cases the segment already shows the token count.
+
+The choice is per-session and does not persist across restarts.
 
 ```
-# status bar shows:  $0.0124
-# Alt/Opt-T → switches to:  12.4k tokens
-# Alt/Opt-T → switches back to:  $0.0124
+# status bar shows:  $US 0.0124
+# Alt/Opt-T → still $US 0.0124  (no-op on a zero-cost / org model)
+# Alt/Opt-T → switches to:  1.5k tok
+# Alt/Opt-T → switches back to:  $US 0.0124
 ```
+
+#### End-of-turn usage receipt
+
+After every completed turn a dim usage receipt is printed. Interrupted turns carry no authoritative usage, so no receipt is shown for them.
+
+It is a single line when no subagents were used:
+
+```
+tokens: ↑ 48.6k [✧ 48.6k | ↻ 0 | ✎ 0]  ↓ 31  ∑ 48.7k  $US 0.2438  5s
+```
+
+The columns are:
+
+- `↑` total input tokens, with cache breakdown `✧` uncached input, `↻` cache-read, `✎` cache-write.
+- `↓` output tokens.
+- `∑` total tokens.
+- `$US ...` turn cost, shown only when pricing is available and the cost is non-zero (zero-cost org/free models omit the cost column).
+- `(session $US ...)` cumulative session cost, shown only when it differs from the turn cost.
+- Elapsed time: `<60s` as `5s`, `<60m` as `1m 23s`, `≥60m` as `1h 5m`.
+
+When subagents were used, three aligned lines are printed with the labels `cumulative`, `parent`, and `subagents`. The elapsed time is appended to the first (`cumulative`) line only.
+
+When model fallbacks occurred during the turn, indented lines below the receipt list each fallback model and its approximate token total:
+
+```
+  alibaba/qwen3.7-max  ∑ ~5.0k
+  zai/glm-5.2          ∑ ~8.0k
+```
+
+#### Exit usage summary
+
+On exit (`/quit`, `Ctrl-D`, or double `Ctrl-C`) the CLI flushes pending usage writes and prints a summary:
+
+- `View in Studio:` hyperlink when a conversation exists.
+- **Session** tier, plus a **Conversation** tier when the conversation totals differ from the session totals.
+- Three-line `cumulative / parent / subagents` breakdown when subagents were used in that tier, otherwise a single line.
+- Cost prefers the persisted backend `task_cost` total; it falls back to rate-based calculation only when no persisted cost exists.
+- Tiers that would be identical are suppressed (e.g. a session that only used one conversation).
+
+After the summary a resume hint is printed:
+
+```
+Resume this conversation with monofoundry --resume <id>
+```
+
+#### Resume usage summary
+
+When you `/resume` a conversation, the CLI prints the conversation's accumulated usage in the same format as the exit summary (single line or three-line breakdown), so you see the cumulative cost immediately.
 
 ---
 

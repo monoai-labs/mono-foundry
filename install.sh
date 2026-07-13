@@ -12,6 +12,7 @@
 # downloadable over plain HTTPS.
 #
 # Windows users: download monofoundry-win32-x64.exe from the Releases page.
+main() {
 set -euo pipefail
 
 REPO="monoai-labs/mono-foundry"
@@ -51,10 +52,51 @@ fi
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 bin="$tmp/$asset"
+if [ -z "$TAG" ]; then
+  sums_url="https://github.com/$REPO/releases/latest/download/SHASUMS256.txt"
+else
+  sums_url="https://github.com/$REPO/releases/download/$TAG/SHASUMS256.txt"
+fi
+sums="$tmp/SHASUMS256.txt"
 
 if ! curl -fsSL -o "$bin" "$url"; then
   echo "error: failed to download '$asset' from $url" >&2
   echo "Check that the release exists at https://github.com/$REPO/releases" >&2
+  exit 1
+fi
+
+if ! curl -fsSL -o "$sums" "$sums_url"; then
+  echo "error: failed to download release checksums from $sums_url" >&2
+  exit 1
+fi
+
+# Require exactly one well-formed entry for this asset before changing the target.
+expected="$(awk -v asset="$asset" '
+  $0 ~ /^[[:xdigit:]]{64}[[:space:]][[:space:]][^[:space:]]+$/ && NF == 2 && $2 == asset {
+    count++
+    hash = $1
+  }
+  END {
+    if (count != 1) exit 1
+    print hash
+  }
+' "$sums")" || {
+  echo "error: release checksums are missing or malformed for '$asset'" >&2
+  exit 1
+}
+
+if command -v sha256sum >/dev/null 2>&1; then
+  if ! printf '%s  %s\n' "$expected" "$bin" | sha256sum -c - >/dev/null; then
+    echo "error: checksum mismatch for '$asset'" >&2
+    exit 1
+  fi
+elif command -v shasum >/dev/null 2>&1; then
+  if ! printf '%s  %s\n' "$expected" "$bin" | shasum -a 256 -c - >/dev/null; then
+    echo "error: checksum mismatch for '$asset'" >&2
+    exit 1
+  fi
+else
+  echo "error: sha256sum or shasum -a 256 is required to verify '$asset'" >&2
   exit 1
 fi
 
@@ -124,3 +166,6 @@ case ":$PATH:" in
     ;;
 esac
 echo "Run 'monofoundry --help' to get started."
+}
+
+main "$@"
