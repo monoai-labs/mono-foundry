@@ -4,33 +4,34 @@ Welcome to the monō foundry documentation. monō foundry is a thin-client CLI f
 
 ## Guides
 
-| Guide | Description |
-|-------|-------------|
-| [Commands & Shortcuts](commands.md) | Full reference for CLI flags, slash commands, keyboard shortcuts, and shell mode. |
-| [Daemon Local Runtime](daemon.md) | Default daemon behaviour, lifecycle commands, troubleshooting, update handling, and direct-mode recovery. |
-| [MCP Servers](mcp.md) | Configure local MCP (Model Context Protocol) servers to extend the agent with custom tools. |
-| [Plugins](plugins.md) | Install, enable, disable, and remove plugins. Covers installation sources, permissions, storage, and first-party plugins (LSP, syntax highlighting). |
-| [Skills](skills.md) | Create and use reusable skill instruction sets (SKILL.md files) to guide the agent on specific tasks. |
-| [Subagents](subagents.md) | How the backend spawns parallel child conversations, visual attribution, tool execution, and prompting suggestions. |
-| [Files & Attachments](files.md) | Attach files to messages via `@`-paths, `/attach`, and `/paste`, with binary/text classification and upload limits. |
-| [Security](security.md) | Network architecture, credential encryption, tool execution model, access control, and hardening recommendations. |
+| Guide                               | Description                                                                                                                                          |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Commands & Shortcuts](commands.md) | Full reference for CLI flags, slash commands, keyboard shortcuts, and shell mode.                                                                    |
+| [Daemon Local Runtime](daemon.md)   | Default daemon behaviour, lifecycle commands, troubleshooting, update handling, and direct-mode recovery.                                            |
+| [MCP Servers](mcp.md)               | Configure local MCP (Model Context Protocol) servers to extend the agent with custom tools.                                                          |
+| [Plugins](plugins.md)               | Install, enable, disable, and remove plugins. Covers installation sources, permissions, storage, and first-party plugins (LSP, syntax highlighting). |
+| [Skills](skills.md)                 | Create and use reusable skill instruction sets (SKILL.md files) to guide the agent on specific tasks.                                                |
+| [Subagents](subagents.md)           | How the backend spawns parallel child conversations, visual attribution, tool execution, and prompting suggestions.                                  |
+| [Files & Attachments](files.md)     | Attach files to messages via `@`-paths, `/attach`, and `/paste`, with binary/text classification and upload limits.                                  |
+| [Security](security.md)             | Network architecture, credential encryption, tool execution model, access control, and hardening recommendations.                                    |
 
 ## Configuration
 
 monō foundry uses `~/.monofoundry/` as its primary configuration directory. Credentials and settings are stored at `~/.monofoundry/config.json`. Several other config locations are automatically detected as fallbacks for compatibility with other tools and editors — see each guide for the specific paths.
 
-| Config | Primary location | Fallbacks |
-|--------|-----------------|-----------|
-| Daemon discovery | `~/.monofoundry/daemon.json` | None |
-| Daemon logs | `~/.monofoundry/logs/daemon.log` | None |
-| MCP servers | `~/.monofoundry/mcp.json` | `~/.mcp.json`, `~/.claude/mcp.json`, `~/.vscode/settings.json`, `~/.gemini/antigravity/mcp_config.json` |
+| Config           | Primary location                 | Fallbacks                                                                                               |
+| ---------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Daemon discovery | `~/.monofoundry/daemon.json`     | None                                                                                                    |
+| Daemon logs      | `~/.monofoundry/logs/daemon.log` | None                                                                                                    |
+| MCP servers      | `~/.monofoundry/mcp.json`        | `~/.mcp.json`, `~/.claude/mcp.json`, `~/.vscode/settings.json`, `~/.gemini/antigravity/mcp_config.json` |
+
 ### Main config fields
 
 The following user settings may be stored in `~/.monofoundry/config.json`:
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `showIdleInputHints` | boolean | `true` | Show the input prompt hint again after 30 seconds of inactivity. Set to `false` to disable idle input prompt hints. |
+| Field                | Type    | Default | Description                                                                                                         |
+| -------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------- |
+| `showIdleInputHints` | boolean | `true`  | Show the input prompt hint again after 30 seconds of inactivity. Set to `false` to disable idle input prompt hints. |
 
 Omitted settings retain their defaults. For example:
 
@@ -40,9 +41,11 @@ Omitted settings retain their defaults. For example:
 }
 ```
 
-| Skills | `~/.monofoundry/skills/` | `~/.claude/skills/`, `~/.agents/skills/`, `~/.cursor/skills/`, `~/.codex/skills/`, `~/.gemini/config/skills/` |
-| Plugins | `~/.monofoundry/plugins/` | None |
-| Agent instructions | `~/.monofoundry/MONOFOUNDRY.md` | `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.agents/AGENTS.md`, `~/.gemini/GEMINI.md`, `~/.cursorrules` |
+| Feature            | Primary Directory               | Secondary Directories                                                                                         |
+| ------------------ | ------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Skills             | `~/.monofoundry/skills/`        | `~/.claude/skills/`, `~/.agents/skills/`, `~/.cursor/skills/`, `~/.codex/skills/`, `~/.gemini/config/skills/` |
+| Plugins            | `~/.monofoundry/plugins/`       | None                                                                                                          |
+| Agent instructions | `~/.monofoundry/MONOFOUNDRY.md` | `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.agents/AGENTS.md`, `~/.gemini/GEMINI.md`, `~/.cursorrules`   |
 
 Workspace-level configs (in the current project directory) always take precedence over home-level configs.
 
@@ -51,3 +54,4 @@ To scaffold a project-level `MONOFOUNDRY.md` with auto-detected metadata (name, 
 ---
 
 © monō ai Australia Pty Ltd. All rights reserved.
+

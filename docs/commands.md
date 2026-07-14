@@ -51,21 +51,21 @@ monofoundry plugin install <src> Install a plugin
 monofoundry plugin config <id>  Configure a plugin
 ```
 
-| Flag                        | Description                                          |
-| --------------------------- | ---------------------------------------------------- |
-| `--version`, `-v`           | Print the version and exit                           |
-| `--cwd <path>`              | Set workspace root (default: current directory)      |
-| `--endpoint <url>`          | Override the API endpoint                            |
+| Flag                        | Description                                                                               |
+| --------------------------- | ----------------------------------------------------------------------------------------- |
+| `--version`, `-v`           | Print the version and exit                                                                |
+| `--cwd <path>`              | Set workspace root (default: current directory)                                           |
+| `--endpoint <url>`          | Override the API endpoint                                                                 |
 | `--app-url <url>`           | Override Studio web app URL (derived from `--endpoint` if omitted; persisted per-project) |
-| `--model <id>`              | Start the session with a specific model pre-selected |
-| `--project <id\|key\|name>` | Scope the session to a workspace project             |
-| `--resume <id>`             | Resume a previous conversation by ID                 |
-| `--approve`                 | Require approval before applying code edits          |
-| `--daemon-client`           | Force routing turns through a daemon                 |
-| `--daemon-url <url>`        | Daemon base URL for `--daemon-client`                |
-| `--daemon-port <n>`         | Shorthand for `--daemon-url http://127.0.0.1:<n>`    |
-| `--daemon-token <token>`    | Bearer token for `--daemon-client`                   |
-| `--direct`, `--no-daemon`   | Run without the daemon                               |
+| `--model <id>`              | Start the session with a specific model pre-selected                                      |
+| `--project <id\|key\|name>` | Scope the session to a workspace project                                                  |
+| `--resume <id>`             | Resume a previous conversation by ID                                                      |
+| `--approve`                 | Require approval before applying code edits                                               |
+| `--daemon-client`           | Force routing turns through a daemon                                                      |
+| `--daemon-url <url>`        | Daemon base URL for `--daemon-client`                                                     |
+| `--daemon-port <n>`         | Shorthand for `--daemon-url http://127.0.0.1:<n>`                                         |
+| `--daemon-token <token>`    | Bearer token for `--daemon-client`                                                        |
+| `--direct`, `--no-daemon`   | Run without the daemon                                                                    |
 
 ---
 
@@ -92,17 +92,17 @@ See [Daemon Local Runtime](daemon.md) for the full guide.
 
 Plugin management is performed through the `monofoundry plugin` CLI command. These commands are not available as REPL slash commands — run them from a terminal.
 
-| Command | Description |
-| --- | --- |
+| Command                                                  | Description                                      |
+| -------------------------------------------------------- | ------------------------------------------------ |
 | `monofoundry plugin install <source> [--enable] [--dev]` | Install a plugin from GitHub, URL, or local path |
-| `monofoundry plugin list` | List installed plugins |
-| `monofoundry plugin enable <id>` | Enable a plugin globally |
-| `monofoundry plugin disable <id>` | Disable a plugin globally |
-| `monofoundry plugin remove <id>` | Remove an installed plugin |
-| `monofoundry plugin info <id>` | Show plugin details |
-| `monofoundry plugin config <id> <key> <value>` | Set a plugin config value |
-| `monofoundry plugin config <id> clear [key]` | Clear plugin config (all or single key) |
-| `monofoundry plugin config <id> list` | List plugin config values |
+| `monofoundry plugin list`                                | List installed plugins                           |
+| `monofoundry plugin enable <id>`                         | Enable a plugin globally                         |
+| `monofoundry plugin disable <id>`                        | Disable a plugin globally                        |
+| `monofoundry plugin remove <id>`                         | Remove an installed plugin                       |
+| `monofoundry plugin info <id>`                           | Show plugin details                              |
+| `monofoundry plugin config <id> <key> <value>`           | Set a plugin config value                        |
+| `monofoundry plugin config <id> clear [key]`             | Clear plugin config (all or single key)          |
+| `monofoundry plugin config <id> list`                    | List plugin config values                        |
 
 See [Plugins](plugins.md) for the full guide on installation sources, permissions, configuration, and first-party plugins.
 
@@ -237,7 +237,7 @@ After generation, edit the `## Architecture` and `## Conventions` sections to de
 
 | Command                             | Aliases  | Description                                                                                                                                  |
 | ----------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/resume [id\|url]`                  | -        | Resume the most recent conversation, or a specific one by ID or Studio URL                                                                   |
+| `/resume [id\|url]`                 | -        | Resume the most recent conversation, or a specific one by ID or Studio URL                                                                   |
 | `/conversations [studio [url\|id]]` | -        | Browse and resume local and project-linked conversations; `studio` to search all Studio conversations, `studio <url\|id>` to resume directly |
 | `/tokens`                           | `/costs` | Display token usage and estimated costs for session, conversation, project, and overall - with a per-model breakdown under each tier         |
 | `/star`                             | -        | Star or unstar the current conversation                                                                                                      |
@@ -377,13 +377,13 @@ Conversation unlinked.
 
 ### Session
 
-| Command               | Aliases   | Description                                                      |
-| --------------------- | --------- | ---------------------------------------------------------------- |
-| `/model [id\|reset]`  | `/models` | View available models, set the active model, or reset to default |
-| `/approve`            | -         | Toggle approval mode for file edits                              |
-| `/clarify <msg>`      | -         | Steer the agent mid-turn                                         |
-| `/nosave [msg\|/cmd]` | -         | Run a turn or command without saving to the backend              |
-| `/theme [name\|reset]` | -        | View available themes, set the active theme, or reset to default |
+| Command                | Aliases   | Description                                                      |
+| ---------------------- | --------- | ---------------------------------------------------------------- |
+| `/model [id\|reset]`   | `/models` | View available models, set the active model, or reset to default |
+| `/approve`             | -         | Toggle approval mode for file edits                              |
+| `/clarify <msg>`       | -         | Steer the agent mid-turn                                         |
+| `/nosave [msg\|/cmd]`  | -         | Run a turn or command without saving to the backend              |
+| `/theme [name\|reset]` | -         | View available themes, set the active theme, or reset to default |
 
 #### `/model [id|reset]`
 
@@ -462,9 +462,9 @@ The selection is persisted in `~/.monofoundry/config.json` as `defaultTheme` and
 
 Bundled themes:
 
-| Name    | Appearance | Description                                    |
-| ------- | ---------- | ---------------------------------------------- |
-| `dark`  | dark       | Dark background with the monō brand palette    |
+| Name    | Appearance | Description                                          |
+| ------- | ---------- | ---------------------------------------------------- |
+| `dark`  | dark       | Dark background with the monō brand palette          |
 | `light` | light      | Light background with explicit high-contrast colours |
 
 Plugin-contributed themes appear in the same picker when their plugin is enabled. See [Plugins](plugins.md) for how to contribute a theme from a plugin.
@@ -861,8 +861,8 @@ The selected model persists per project directory and takes effect on the next t
 
 ### Utility Switching
 
-| Shortcut    | Action                                                   |
-| ----------- | -------------------------------------------------------- |
+| Shortcut    | Action                                                    |
+| ----------- | --------------------------------------------------------- |
 | `Alt/Opt-U` | Open the utility picker without clearing the input buffer |
 
 #### `Alt/Opt-U` - Switch utility
@@ -891,21 +891,21 @@ The persistent status bar sits below the input line and survives transient notic
 
 **Left zone** (left-to-right):
 
-| Segment | Source | Shown when |
-| ------- | ------ | ---------- |
-| Model | Active model display name | Always |
-| Utility | Selected utility display name | Only when a utility is explicitly selected |
-| Org | Active organisation name or ID | Once the org is known |
+| Segment | Source                         | Shown when                                 |
+| ------- | ------------------------------ | ------------------------------------------ |
+| Model   | Active model display name      | Always                                     |
+| Utility | Selected utility display name  | Only when a utility is explicitly selected |
+| Org     | Active organisation name or ID | Once the org is known                      |
 
 **Right zone** (left-to-right):
 
-| Segment | Source | Shown when |
-| ------- | ------ | ---------- |
-| Tokens / cost | Cumulative session usage, or live turn usage/cost while a turn is running | Once any usage has accrued |
-| Approval | `approval: on` | When `/approve` or `--approve` is active |
-| No-save | `no-save` | When `/nosave` mode is active |
-| Studio link | Conversation, work item, or project URL | When the linked item exists |
-| Project | `⊙ project · workitem` | When a project is selected |
+| Segment       | Source                                                                    | Shown when                               |
+| ------------- | ------------------------------------------------------------------------- | ---------------------------------------- |
+| Tokens / cost | Cumulative session usage, or live turn usage/cost while a turn is running | Once any usage has accrued               |
+| Approval      | `approval: on`                                                            | When `/approve` or `--approve` is active |
+| No-save       | `no-save`                                                                 | When `/nosave` mode is active            |
+| Studio link   | Conversation, work item, or project URL                                   | When the linked item exists              |
+| Project       | `⊙ project · workitem`                                                    | When a project is selected               |
 
 | Shortcut    | Action                                                                    |
 | ----------- | ------------------------------------------------------------------------- |
@@ -992,15 +992,16 @@ When you `/resume` a conversation, the CLI prints the conversation's accumulated
 
 ### Navigation
 
-| Key                       | Action                                                  |
-| ------------------------- | ------------------------------------------------------- |
-| `←` / `→`                 | Move cursor one character left / right                  |
-| `Home`                    | Move cursor to the start of the line (same as `Ctrl-A`) |
-| `End`                     | Move cursor to the end of the line (same as `Ctrl-E`)   |
-| `Alt/Opt-←` / `Alt/Opt-B` | Move cursor one word to the left                        |
-| `Alt/Opt-→` / `Alt/Opt-F` | Move cursor one word to the right                       |
-| `Backspace`               | Delete character before the cursor                      |
-| `Delete`                  | Delete character at the cursor                          |
+| Key                       | Action                                                     |
+| ------------------------- | ---------------------------------------------------------- |
+| `←` / `→`                 | Move cursor one character left / right                     |
+| `Alt/Opt-↑` / `Alt/Opt-↓` | Move cursor to the blank line up / down in multiline input |
+| `Home`                    | Move cursor to the start of the line (same as `Ctrl-A`)    |
+| `End`                     | Move cursor to the end of the line (same as `Ctrl-E`)      |
+| `Alt/Opt-←` / `Alt/Opt-B` | Move cursor one word to the left                           |
+| `Alt/Opt-→` / `Alt/Opt-F` | Move cursor one word to the right                          |
+| `Backspace`               | Delete character before the cursor                         |
+| `Delete`                  | Delete character at the cursor                             |
 
 ---
 

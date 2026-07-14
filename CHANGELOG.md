@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.24.2 — 2026-07-14
+
+- Fixed a crash on load.
+- More reliable daemon result delivery, standalone startup, terminal output limits, search exclusions, and prompt refresh.
+- Improved pasted-input wrapping, multiline navigation, edit mismatch messages, and large-output handling.
+- Stronger plugin validation, replay safety, configuration loading, and regression coverage.
+- Documentation and build-process improvements.
+- Bug fixes and internal improvements.
+
 ## v0.24.1 — 2026-07-14
 
 - More reliable one-shot commands, daemon sessions, terminal resizing, and session persistence.
