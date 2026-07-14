@@ -24,6 +24,22 @@ monō foundry uses `~/.monofoundry/` as its primary configuration directory. Cre
 | Daemon discovery | `~/.monofoundry/daemon.json` | None |
 | Daemon logs | `~/.monofoundry/logs/daemon.log` | None |
 | MCP servers | `~/.monofoundry/mcp.json` | `~/.mcp.json`, `~/.claude/mcp.json`, `~/.vscode/settings.json`, `~/.gemini/antigravity/mcp_config.json` |
+### Main config fields
+
+The following user settings may be stored in `~/.monofoundry/config.json`:
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `showIdleInputHints` | boolean | `true` | Show the input prompt hint again after 30 seconds of inactivity. Set to `false` to disable idle input prompt hints. |
+
+Omitted settings retain their defaults. For example:
+
+```json
+{
+  "showIdleInputHints": false
+}
+```
+
 | Skills | `~/.monofoundry/skills/` | `~/.claude/skills/`, `~/.agents/skills/`, `~/.cursor/skills/`, `~/.codex/skills/`, `~/.gemini/config/skills/` |
 | Plugins | `~/.monofoundry/plugins/` | None |
 | Agent instructions | `~/.monofoundry/MONOFOUNDRY.md` | `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.agents/AGENTS.md`, `~/.gemini/GEMINI.md`, `~/.cursorrules` |

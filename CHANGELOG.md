@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.24.1 — 2026-07-14
+
+- More reliable one-shot commands, daemon sessions, terminal resizing, and session persistence.
+- Improved multiline input, paste tokens, Unicode editing, wrapping, highlighting, and idle prompt hints.
+- Safer large-file handling, plugin lifecycle behaviour, attachment cleanup, and conversation history recovery.
+- Better usage and cost reporting, package-manager detection, version comparisons, and model-cache resilience.
+- Bug fixes and internal improvements.
+
 ## v0.24.0 — 2026-07-13
 
 - More reliable sessions, reconnections, replay, and background work.
