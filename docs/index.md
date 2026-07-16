@@ -29,14 +29,16 @@ monō foundry uses `~/.monofoundry/` as its primary configuration directory. Cre
 
 The following user settings may be stored in `~/.monofoundry/config.json`:
 
-| Field                | Type    | Default | Description                                                                                                         |
-| -------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------- |
-| `showIdleInputHints` | boolean | `true`  | Show the input prompt hint again after 30 seconds of inactivity. Set to `false` to disable idle input prompt hints. |
+| Field                | Type    | Default       | Description                                                                                                         |
+| -------------------- | ------- | ------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `defaultInputMode`   | string  | `"interrupt"` | Route ordinary text entered while the agent is working. `"clarify"` steers the current turn; `"interrupt"` queues a separate follow-up. |
+| `showIdleInputHints` | boolean | `true`        | Show the input prompt hint again after 30 seconds of inactivity. Set to `false` to disable idle input prompt hints. |
 
 Omitted settings retain their defaults. For example:
 
 ```json
 {
+  "defaultInputMode": "clarify",
   "showIdleInputHints": false
 }
 ```
@@ -54,4 +56,3 @@ To scaffold a project-level `MONOFOUNDRY.md` with auto-detected metadata (name, 
 ---
 
 © monō ai Australia Pty Ltd. All rights reserved.
-

@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.25.3 — 2026-07-16
+
+- Standalone plugin hosts now launch correctly.
+- Bug fixes and internal improvements.
+
+## v0.25.2 — 2026-07-16
+
+- Standalone builds now support plugins on macOS and Linux.
+- More reliable turn recovery after transient network errors.
+
+## v0.25.1 — 2026-07-16
+
+- More reliable standalone release builds.
+- Bug fixes and internal improvements.
+
+## v0.25.0 — 2026-07-16
+
+- Configurable handling of messages entered during an active turn.
+- Single-executable Windows standalone releases with isolated plugin support.
+- More reliable session resumption, progress reporting, cumulative costs, catalogue selections, and connection recovery.
+- Built-in themes and profile relocation supported in standalone use.
+- Bug fixes and internal improvements.
+
 ## v0.24.2 — 2026-07-14
 
 - Fixed a crash on load.

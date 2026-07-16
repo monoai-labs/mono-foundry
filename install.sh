@@ -70,8 +70,10 @@ if ! curl -fsSL -o "$sums" "$sums_url"; then
   exit 1
 fi
 
-# Require exactly one well-formed entry for this asset before changing the target.
-expected="$(awk -v asset="$asset" '
+# Require exactly one well-formed entry for the release binary before changing the target.
+checksum_asset="$asset"
+checksum_file="$bin"
+expected="$(awk -v asset="$checksum_asset" '
   $0 ~ /^[[:xdigit:]]{64}[[:space:]][[:space:]][^[:space:]]+$/ && NF == 2 && $2 == asset {
     count++
     hash = $1
@@ -81,22 +83,22 @@ expected="$(awk -v asset="$asset" '
     print hash
   }
 ' "$sums")" || {
-  echo "error: release checksums are missing or malformed for '$asset'" >&2
+  echo "error: release checksum is missing or malformed for '$checksum_asset'" >&2
   exit 1
 }
 
 if command -v sha256sum >/dev/null 2>&1; then
-  if ! printf '%s  %s\n' "$expected" "$bin" | sha256sum -c - >/dev/null; then
-    echo "error: checksum mismatch for '$asset'" >&2
+  if ! printf '%s  %s\n' "$expected" "$checksum_file" | sha256sum -c - >/dev/null; then
+    echo "error: checksum mismatch for '$checksum_asset'" >&2
     exit 1
   fi
 elif command -v shasum >/dev/null 2>&1; then
-  if ! printf '%s  %s\n' "$expected" "$bin" | shasum -a 256 -c - >/dev/null; then
-    echo "error: checksum mismatch for '$asset'" >&2
+  if ! printf '%s  %s\n' "$expected" "$checksum_file" | shasum -a 256 -c - >/dev/null; then
+    echo "error: checksum mismatch for '$checksum_asset'" >&2
     exit 1
   fi
 else
-  echo "error: sha256sum or shasum -a 256 is required to verify '$asset'" >&2
+  echo "error: sha256sum or shasum -a 256 is required to verify '$checksum_asset'" >&2
   exit 1
 fi
 

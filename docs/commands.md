@@ -429,12 +429,19 @@ Approval mode: OFF
 
 Steers the running agent mid-turn by injecting a clarification at the next tool boundary. If called when the agent is idle, the message is sent as a normal turn instead.
 
+Set `"defaultInputMode": "clarify"` in `~/.monofoundry/config.json` to make ordinary messages steer the parent agent while it is working, so the `/clarify` prefix is optional. Omit the setting or use `"interrupt"` to retain the default follow-up behavior.
+
+Explicit commands keep their own behavior in either mode: `/clarify` always steers the parent, `/clarify subagent <tag>` targets a running child, safe mid-turn commands run immediately, and other slash commands or `!` shell input wait as follow-ups.
+
 ```
 # while the agent is working:
 > /clarify only change the TypeScript files, leave the tests
 
 # when idle:
 > /clarify actually, use camelCase not snake_case
+
+# with defaultInputMode set to "clarify" while the agent is working:
+> actually, use camelCase not snake_case
 ```
 
 #### `/nosave [msg|/cmd]`

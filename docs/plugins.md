@@ -31,6 +31,19 @@ Plugins extend monō foundry with additional capabilities - language server supp
 
 A plugin is a self-contained package with a `monofoundry.plugin.json` manifest that declares its name, version, entry point, permissions, and what it contributes to the runtime. The CLI downloads, validates, and installs plugins into a local store, then loads enabled plugins when a session starts.
 
+### Runtime isolation
+
+Plugins run in an isolated child process and communicate with the CLI over the existing IPC protocol. Windows standalone binaries re-invoke the installed executable with an internal plugin-host mode, so the Windows installation contains only `monofoundry.exe`. npm/source and Node development builds continue to use the emitted `dist/plugins/host/bootstrap.mjs` entrypoint.
+||||||| Stash base
+
+### Runtime contract
+
+Plugins are executed in an isolated child host process. The host imports the manifest entry from the installed package directory using a file URL, so `import.meta.url`-relative asset lookup is supported.
+
+Standalone binaries use the embedded Bun runtime for the child host; they do not guarantee a stock Node.js runtime. Plugins must not assume that a separately installed `node` executable, Node-only built-ins, or an ESM `__dirname` global exists. For portable asset lookup, use `new URL(\"./asset\", import.meta.url)` and convert it with `fileURLToPath()` when a filesystem path is required.
+
+The manifest `moduleType` must match the plugin entry module format (`esm` or `cjs`). Node-specific runtime behavior should be treated as unsupported unless it is also supported by the Bun version embedded in the standalone release.
+
 Plugins can contribute:
 
 | Contribution            | Description                                                                                                           |
