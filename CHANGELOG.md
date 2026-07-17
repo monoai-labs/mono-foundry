@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.25.4 — 2026-07-17
+
+- Clearer terminal command receipts, output previews, and error messages.
+- More reliable pasted-input handling and Unicode cursor movement.
+- Improved terminal output formatting and plain-text debug output.
+- Bug fixes and internal improvements.
+
 ## v0.25.3 — 2026-07-16
 
 - Standalone plugin hosts now launch correctly.
