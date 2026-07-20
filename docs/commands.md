@@ -789,8 +789,12 @@ nothing to commit, working tree clean
 | `Ctrl-D`        | Exit the REPL - double-press to confirm (equivalent to `/quit`)                                                |
 | `Ctrl-A`        | Move cursor to the start of the line                                                                           |
 | `Ctrl-E`        | Move cursor to the end of the line                                                                             |
-| `Ctrl-U`        | Delete everything from the start of the line to the cursor                                                     |
-| `Ctrl-W`        | Delete the word immediately before the cursor                                                                  |
+| `Ctrl-K`        | Kill (delete) everything from the cursor to the end of the line; saves it in the one-slot kill buffer         |
+| `Ctrl-U`        | Delete everything from the start of the line to the cursor; saves it in the kill buffer                       |
+| `Ctrl-W`        | Delete the word immediately before the cursor; saves it in the kill buffer                                    |
+| `Ctrl-Y`        | Yank the contents of the one-slot kill buffer at the cursor                                                    |
+| `Ctrl-Z`        | Undo the previous buffer edit                                                                                  |
+| `Ctrl-L`        | Repaint the line editor                                                                                       |
 | `Ctrl-R`        | Open the history search picker                                                                                 |
 | `Ctrl-S`        | Stash / restore: stash the buffer on first press; restore (pop) on the second press with an empty buffer       |
 | `Ctrl-X Ctrl-E` | Open the current input in `$VISUAL` or `$EDITOR` (falling back to `vi`); the saved content replaces the buffer |

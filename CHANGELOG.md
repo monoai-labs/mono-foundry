@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.26.0 — 2026-07-20
+
+- More capable and recoverable interactive editing, including bounded undo and redo, text recovery, improved paste handling, and more reliable Unicode navigation.
+- Safer session recovery, with drafts preserved through re-authentication and stale organisation context cleared when conversations resume.
+- Cleaner redirected one-shot output and more accurate terminal rendering across wide characters, wrapping, and control characters.
+- Safer and more transparent file operations, including bounded large-file handling, binary-file protection, symbolic-link exclusion, and reporting for skipped search-and-replace candidates.
+- More reliable cancellation, queued-input cleanup, daemon recovery, reconnects, and authentication failure handling.
+- Tooling and daemon improvements, including better concurrency visibility, organisation-scoped state, and expanded regression coverage.
+- Bug fixes and internal improvements.
+
 ## v0.25.4 — 2026-07-17
 
 - Clearer terminal command receipts, output previews, and error messages.
