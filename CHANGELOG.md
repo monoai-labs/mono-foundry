@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.26.2 — 2026-07-22
+
+- Bug fixes and internal improvements.
+
+## v0.26.1 — 2026-07-22
+
+- More capable terminal commands with selectable shells, longer task timeouts, clearer output, and better managed-session retention.
+- More reliable large-file reads, directory listings, search and replace, text edits, and Git path filtering.
+- Improved daemon diagnostics, stale-instance detection, recovery, and configuration preservation.
+- Bug fixes and internal improvements.
+
 ## v0.26.0 — 2026-07-20
 
 - More capable and recoverable interactive editing, including bounded undo and redo, text recovery, improved paste handling, and more reliable Unicode navigation.
