@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.26.3 — 2026-07-24
+
+- Live cost estimates now show bounded ranges while work is in progress.
+- Known input narrows estimates, with cached and non-cached usage priced more accurately.
+- Bug fixes and internal improvements.
+
 ## v0.26.2 — 2026-07-22
 
 - Bug fixes and internal improvements.
