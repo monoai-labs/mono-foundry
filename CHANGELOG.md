@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.26.4 — 2026-07-31
+
+- Conversation resumption now restores the associated project directory and context.
+- Pressing Enter after session expiry now starts sign-in correctly.
+- Undo and redo now preserve paste guidance and prevent stale completion results.
+- Bug fixes and internal improvements.
+
 ## v0.26.3 — 2026-07-24
 
 - Live cost estimates now show bounded ranges while work is in progress.
