@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.26.5 — 2026-08-05
+
+- Mac Finder file drops now resolve correctly as attachments, including URL-encoded filenames and spaces.
+- Bug fixes and internal improvements.
+
 ## v0.26.4 — 2026-07-31
 
 - Conversation resumption now restores the associated project directory and context.
