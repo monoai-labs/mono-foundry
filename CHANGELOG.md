@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.27.0 — 2026-08-17
+
+- Dynamic forms are implemented.
+- Plugins can contribute skills, command output, and completed code-block renderers.
+- Terminal input, rendering, and resizing are more reliable.
+- Bug fixes and internal improvements.
+
 ## v0.26.5 — 2026-08-05
 
 - Mac Finder file drops now resolve correctly as attachments, including URL-encoded filenames and spaces.

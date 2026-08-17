@@ -53,6 +53,9 @@ Plugins can contribute:
 | **LSP**                 | Provide Language Server Protocol support for specific languages.                                                      |
 | **Syntax highlighting** | Highlight code blocks and diffs in the terminal renderer.                                                             |
 | **Configuration**       | Declare a configuration schema that users can set per-workspace.                                                      |
+| **Skill directories**   | Contribute package-relative static skill directories; no additional permission is required.                         |
+
+Plugins may declare skill directories with `contributes.skills.directories`, for example `{ "contributes": { "skills": { "directories": ["skills"] } } }`. Paths are canonicalized and scanned only when contained by the installed package; missing directories and symlink escapes are ignored. Enable/disable changes apply on the next plugin and REPL/daemon startup.
 
 First-party plugins (published by monō ai) are marked with a `monoai` publisher ID and shown with a `(first-party)` indicator in CLI output.
 
@@ -427,6 +430,23 @@ Plugins can contribute slash commands to the interactive REPL. When a plugin dec
 - **`/help` output** — listed with a `(plugin)` prefix in the description
 - **Tab completion** — available alongside built-in commands when typing `/`
 - **Dispatch** — handled locally when the user types the command
+
+### Command output
+
+Command handlers receive the command arguments and an optional output context:
+
+```ts
+ctx.commands.register({
+  name: "status",
+  description: "Show plugin status",
+  handler: (args, output) => {
+    output?.write("Status: ready\\n");
+    output?.writeError("A warning occurred\\n");
+  },
+});
+```
+
+`write()` sends normal output and `writeError()` sends error output through the active CLI output path. The second argument is optional for compatibility with existing handlers. Hosted plugins transport output over IPC in emission order.
 
 ### Collision Handling
 

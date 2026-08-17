@@ -31,29 +31,30 @@ When a skill is invoked (via the agent's `invoke_skill` tool or the `/<skill-nam
 
 ## Discovery Paths
 
-The CLI scans skill directories in a fixed order. **The first directory to produce a skill with a given name wins** — if two directories both contain a skill called `"commit"`, the one earlier in the list takes precedence. Workspace directories are scanned before home directories, so project-level skills override user-level ones.
+The CLI scans skill directories in a fixed order. **The first directory to produce a skill with a given name wins** — if two directories both contain a skill called `"commit"`, the one earlier in the list takes precedence. Workspace directories are scanned before home directories, so project-level skills override user-level ones. Enabled plugin directories are inserted after `.monofoundry/skills`, sorted by stable plugin ID while preserving each manifest's declaration order. Missing or unreadable directories are ignored, and symlink escapes outside the installed package are rejected. Plugin changes take effect on the next plugin/REPL/daemon startup; there is no dynamic watcher.
 
 ### Workspace directories
 
 | # | Path | Source label |
 |---|------|-------------|
 | 1 | `.monofoundry/skills/` | monofoundry |
-| 2 | `.claude/skills/` | claude |
-| 3 | `.agents/skills/` | agents |
-| 4 | `.cursor/skills/` | cursor |
-| 5 | `.codex/skills/` | codex |
-| 6 | `.github/skills/` | github |
+| 2 | Plugin-contributed directories | `plugin:<pluginId>` |
+| 3 | `.claude/skills/` | claude |
+| 4 | `.agents/skills/` | agents |
+| 5 | `.cursor/skills/` | cursor |
+| 6 | `.codex/skills/` | codex |
+| 7 | `.github/skills/` | github |
 
 ### Home directories
 
 | # | Path | Source label |
 |---|------|-------------|
-| 7 | `~/.monofoundry/skills/` | monofoundry |
-| 8 | `~/.claude/skills/` | claude |
-| 9 | `~/.agents/skills/` | agents |
-| 10 | `~/.cursor/skills/` | cursor |
-| 11 | `~/.codex/skills/` | codex |
-| 12 | `~/.gemini/config/skills/` | antigravity |
+| 8 | `~/.monofoundry/skills/` | monofoundry |
+| 9 | `~/.claude/skills/` | claude |
+| 10 | `~/.agents/skills/` | agents |
+| 11 | `~/.cursor/skills/` | cursor |
+| 12 | `~/.codex/skills/` | codex |
+| 13 | `~/.gemini/config/skills/` | antigravity |
 
 `~/.monofoundry/skills/` is the primary home-level skills directory. The remaining paths are automatically detected as fallbacks for compatibility with Claude Code, OpenAI Codex, Cursor, GitHub Copilot, and Antigravity.
 
