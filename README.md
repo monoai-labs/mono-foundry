@@ -46,7 +46,7 @@ monofoundry auth status             # show current sign-in
 monofoundry auth logout             # remove stored credentials
 ```
 
-Credentials and settings are persisted at `~/.monofoundry/config.json`. Note that for browser-based login, you currently need to copy/paste the vscode:// redirect URL from the browser to the command line by right clicking on the "Open monō ai" link -> Copy Link Address.
+Credentials and settings are persisted in the monofoundry configuration directory. Set `MONOFOUNDRY_CONFIG_DIR` to use a directory verbatim. If it is unset, an existing `$HOME/.monofoundry` directory is preserved. Otherwise, the configuration directory defaults to `$XDG_CONFIG_HOME/monofoundry` or `$HOME/.config/monofoundry` on Linux, `$HOME/.monofoundry` on macOS, and `%APPDATA%/monofoundry` on Windows. The resulting directory contains `config.json`.
 
 ## Usage
 

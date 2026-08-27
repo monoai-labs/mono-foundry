@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.27.1 — 2026-08-27
+
+- Configuration storage now supports explicit directories and platform-appropriate defaults while preserving existing profiles.
+- Stream reconnection attempts are bounded per turn with predictable backoff.
+- Bug fixes and internal improvements.
+
 ## v0.27.0 — 2026-08-17
 
 - Dynamic forms are implemented.
