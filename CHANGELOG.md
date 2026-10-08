@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.27.2 — 2026-10-08
+
+- Model and utility catalogues now load afresh for each interactive session and remain available through session resets.
+- Catalogue selections, labels, and pricing are better isolated when switching organisations or signing in again.
+- Plugin subprocesses that exit before reading their input no longer crash the host.
+- Bug fixes and internal improvements.
+
 ## v0.27.1 — 2026-08-27
 
 - Configuration storage now supports explicit directories and platform-appropriate defaults while preserving existing profiles.
